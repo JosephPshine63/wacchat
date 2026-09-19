@@ -2,6 +2,8 @@
 
 **Full-stack real-time chat application**, decomposed into a small set of Spring Boot microservices behind a single API Gateway, an Angular SPA, PostgreSQL, Keycloak, and RabbitMQ. Users authenticate via OAuth2/OIDC (Keycloak), exchange messages over WebSocket (STOMP/SockJS, relayed through RabbitMQ), upload media to Cloudflare R2, and get a welcome AI chatbot conversation on first login.
 
+**Live demo:** [wacchat.win](https://wacchat.win)
+
 ---
 
 ## Features
