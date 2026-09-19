@@ -5,6 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Full deploy (restarts the whole stack incl. Keycloak/RabbitMQ) instead of only the changed services'
+        type: boolean
+        default: false
 
 jobs:
   backend-services:
@@ -74,3 +80,51 @@ jobs:
       - name: Production build
         working-directory: wac/frontend
         run: npm run build
+
+  # Deploys to production on every green push to main (and on a manual run of this workflow
+  # from main). The server-side logic — which services changed, health checks, rollback —
+  # lives in ci-deploy.sh so it can be read and run by hand.
+  deploy:
+    name: Deploy to production
+    needs: [backend-services, frontend]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    env:
+      DEPLOY_FLAG: ${{ inputs.full && '--full' || '' }}
+      HAS_DEPLOY_SECRETS: ${{ secrets.TS_OAUTH_CLIENT_ID != '' && secrets.TS_OAUTH_CLIENT_SECRET != '' && secrets.DEPLOY_SSH_KEY != '' }}
+    steps:
+      # Until the three secrets exist the job is skipped with a warning instead of failing every push.
+      - name: Check deploy secrets
+        if: env.HAS_DEPLOY_SECRETS != 'true'
+        run: echo "::warning::Deploy skipped — set TS_OAUTH_CLIENT_ID, TS_OAUTH_CLIENT_SECRET and DEPLOY_SSH_KEY in the repository secrets."
+
+      - name: Connect to Tailscale
+        if: env.HAS_DEPLOY_SECRETS == 'true'
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_CLIENT_SECRET }}
+          tags: tag:ci
+
+      - name: Add deploy SSH key
+        if: env.HAS_DEPLOY_SECRETS == 'true'
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      # ci-deploy.sh is pulled with the code, so the checkout is updated here first and the
+      # previous commit is handed to the script (it diffs PREV..HEAD to pick the services).
+      - name: Deploy over SSH
+        if: env.HAS_DEPLOY_SECRETS == 'true'
+        run: |
+          ssh -o StrictHostKeyChecking=accept-new gpr-server@gpr-server bash -s -- "$DEPLOY_FLAG" <<'REMOTE'
+          set -euo pipefail
+          cd ~/Applications/connecting
+          [ "$(git rev-parse --abbrev-ref HEAD)" = "main" ] || { echo "server checkout is not on main"; exit 1; }
+          PREV=$(git rev-parse HEAD)
+          git pull --ff-only
+          bash ci-deploy.sh "$PREV" "$@"
+          REMOTE
