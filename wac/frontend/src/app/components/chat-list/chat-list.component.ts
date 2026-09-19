@@ -1,7 +1,6 @@
 import {Component, input, InputSignal, output} from '@angular/core';
 import {ChatService} from '../../services/services/chat.service';
 import {ChatResponse} from '../../services/models/chat-response';
-import {DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {UserService} from '../../services/services/user.service';
 import {UserResponse} from '../../services/models/user-response';
@@ -11,12 +10,13 @@ import {ModerationService} from '../../services/services/moderation.service';
 import {BlockedUserResponse} from '../../services/models/blocked-user-response';
 import {ChatFilter, ChatFilterService} from '../../utils/chat-filter/chat-filter.service';
 import {MuteService} from '../../utils/mute/mute.service';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LocalDatePipe } from '../../utils/i18n/local-date.pipe';
 
 @Component({
   selector: 'app-chat-list',
   templateUrl: './chat-list.component.html',
-  imports: [
-    DatePipe,
+  imports: [TranslocoPipe, LocalDatePipe,
     FormsModule
   ],
   styleUrl: './chat-list.component.scss'

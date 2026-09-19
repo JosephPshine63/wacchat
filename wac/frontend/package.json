@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "api-gen": "ng-openapi-gen --input ./src/openapi/openapi.json --output ./src/app/services"
+    "api-gen": "ng-openapi-gen --input ./src/openapi/openapi.json --output ./src/app/services",
+    "i18n:translate": "node scripts/i18n.mjs translate",
+    "i18n:check": "node scripts/i18n.mjs check"
   },
   "private": true,
   "dependencies": {
@@ -21,12 +23,13 @@
     "@angular/router": "^19.2.25",
     "@ctrl/ngx-emoji-mart": "^9.2.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
+    "@jsverse/transloco": "^7.6.1",
+    "@stomp/stompjs": "^7.0.0",
     "bootstrap": "^5.3.3",
     "keycloak-js": "^26.0.7",
     "ng-openapi-gen": "^0.52.0",
     "quill": "^2.0.3",
     "rxjs": "~7.8.0",
-    "@stomp/stompjs": "^7.0.0",
     "sockjs-client": "^1.6.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

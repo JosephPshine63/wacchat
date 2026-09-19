@@ -1,0 +1,285 @@
+{
+  "common": {
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "loading": "Cargando…",
+    "online": "En línea",
+    "offline": "Sin conexión",
+    "logout": "Salir"
+  },
+  "media": {
+    "video": "🎥 Vídeo",
+    "voice": "🎤 Mensaje de voz",
+    "photo": "📷 Foto"
+  },
+  "errors": {
+    "recordingNotStarted": "No se ha iniciado la grabación de la nota de voz: {{ error }}",
+    "audioPlaybackBlocked": "El navegador bloquea la reproducción del audio de la llamada: {{ error }}",
+    "videoPlaybackBlocked": "La reproducción de la videollamada se ha bloqueado en el navegador: {{ error }}"
+  },
+  "notifications": {
+    "newMessage": "Nuevo mensaje",
+    "sentPhoto": "Te ha enviado una foto",
+    "sentVideo": "Te ha enviado un vídeo",
+    "sentVoice": "Te ha enviado un mensaje de voz",
+    "newRequest": "Nueva solicitud de chat",
+    "wantsToChat": "Quiere empezar a chatear contigo",
+    "newGroup": "Nuevo grupo",
+    "addedToGroup": "Te han añadido a un grupo",
+    "incomingCall": "Llamada entrante",
+    "incomingVideoCall": "Llamada de vídeo entrante"
+  },
+  "settings": {
+    "title": "Configuración",
+    "theme": "Tema",
+    "language": "Idioma",
+    "chatBackground": "Fondo de chat",
+    "reportBug": "Informar de un error",
+    "themes": {
+      "pio-light": "WacChat Light",
+      "pio-dark": "WacChat Dark",
+      "blue": "Azul clásico",
+      "light": "Blanco / Claro",
+      "dark": "Negro / Oscuro",
+      "green": "Verde",
+      "indigo": "Índigo",
+      "magenta": "Magenta",
+      "crimson": "Rojo cardenal",
+      "earth": "Tierra"
+    },
+    "backgrounds": {
+      "none": "Nadie",
+      "birds-solid": "Pajaritos",
+      "birds-red": "Pajaritos rojos",
+      "birds-outline": "Pajaritos de contorno"
+    }
+  },
+  "sessionBlocked": {
+    "title": "Sesión ya activa",
+    "text": "Ya tienes una sesión abierta en otro dispositivo o en otra pestaña. Cierra esa sesión para seguir aquí, o vuelve a intentarlo si ya lo has hecho.",
+    "retry": "Inténtalo de nuevo",
+    "checking": "Comprueba…"
+  },
+  "replyPreview": {
+    "cancel": "Cancelar respuesta"
+  },
+  "forwardPicker": {
+    "title": "Reenviar a…",
+    "empty": "No hay ningún chat disponible."
+  },
+  "audioPlayer": {
+    "pause": "Pausa",
+    "play": "Reproducir"
+  },
+  "errorLog": {
+    "title": "Registro de errores",
+    "clear": "Vaciar",
+    "empty": "No se ha registrado ningún error."
+  },
+  "lightbox": {
+    "zoomOut": "Reducir",
+    "zoomIn": "Ampliar"
+  },
+  "callInvitee": {
+    "titleVideo": "¿A quién quieres invitar a la videollamada?",
+    "titleVoice": "¿A quién quieres invitar a la llamada de voz?",
+    "hint": "Hasta un{{ count }}s participantes.",
+    "empty": "No hay ningún otro miembro en el grupo.",
+    "submit": "Llama a ({{ count }})"
+  },
+  "messageActions": {
+    "title": "Acciones",
+    "react": "Reacciona",
+    "star": "Añadir a favoritos",
+    "unstar": "Quitar de favoritos",
+    "reply": "Responder",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "forward": "Reenviar",
+    "copy": "Copia"
+  },
+  "groupCreate": {
+    "title": "Nuevo grupo",
+    "namePlaceholder": "Nombre del grupo",
+    "empty": "No hay ningún contacto disponible.",
+    "creating": "Creación…",
+    "submit": "Crear grupo ({{ count }})",
+    "errors": {
+      "create": "No se ha podido crear el grupo. Inténtalo de nuevo."
+    }
+  },
+  "groupMembers": {
+    "title": "Miembros del grupo",
+    "you": "(tú)",
+    "admin": "Admin",
+    "leave": "Sal del grupo",
+    "remove": "Eliminar del grupo",
+    "add": "Añadir miembro",
+    "emptyAdd": "No hay ningún otro contacto que añadir."
+  },
+  "avatarUpload": {
+    "title": "Foto de perfil",
+    "use": "Usa esta foto",
+    "upload": "Subir foto",
+    "remove": "Eliminar foto",
+    "errors": {
+      "format": "Formato no compatible. Usa jpg, png o webp.",
+      "size": "La imagen pesa más de 5 MB.",
+      "upload": "No se ha podido cargar. Inténtalo de nuevo.",
+      "remove": "No se ha podido eliminar. Inténtalo de nuevo."
+    }
+  },
+  "usernameSetup": {
+    "title": "Elige tu nombre de usuario",
+    "text": "Tu nombre de usuario es único y se mostrará a los demás usuarios en lugar de tu nombre. Puedes usar letras minúsculas, números, guiones bajos, guiones y puntos (entre 3 y 20 caracteres).",
+    "placeholder": "tu_nombre_de_usuario",
+    "available": "Disponible",
+    "taken": "El nombre de usuario ya está en uso",
+    "invalid": "Solo letras minúsculas, números, _, . y - (mínimo 3 caracteres)",
+    "saving": "Rescate…",
+    "continue": "Sigue leyendo"
+  },
+  "call": {
+    "incomingVideo": "Te está llamando alguien por videollamada…",
+    "incomingVoice": "Llamada entrante…",
+    "calling": "Llamada en curso…",
+    "ringing": "Suena…",
+    "reject": "Rechazar",
+    "accept": "Aceptar",
+    "mute": "Mudo",
+    "hangUp": "Cuelga el teléfono"
+  },
+  "chatList": {
+    "title": "Chat",
+    "newChat": "Nuevo chat",
+    "newGroup": "Nuevo grupo",
+    "search": "Buscar…",
+    "searchAria": "Buscar",
+    "filters": {
+      "all": "Todas",
+      "unread": "Sin leer",
+      "favorites": "Favoritos",
+      "blocked": "Bloqueados",
+      "archived": "Archivadas"
+    },
+    "unblock": "Desbloquear",
+    "noBlocked": "No hay ningún usuario bloqueado.",
+    "incomingRequests": "Solicitudes pendientes ({{ count }})",
+    "favorite": "Favorito",
+    "muteNotifications": "Silenciar notificaciones",
+    "archive": "Archivar",
+    "pending": "A la espera de...",
+    "lastSeen": "Visto en {{ date }}",
+    "empty": "Todavía no hay ningún chat…"
+  },
+  "userCard": {
+    "copyUsername": "Copia el nombre de usuario",
+    "memberSince": "Miembro desde el {{ date }}",
+    "lastSeen": "Último acceso{{ date }} informo",
+    "neverConnected": "Nunca se ha conectado",
+    "requestSent": "Solicitud enviada",
+    "sendRequest": "Enviar solicitud de chat",
+    "mute": "Silenciar notificaciones",
+    "unmute": "Reactivar notificaciones",
+    "tabs": {
+      "info": "Información",
+      "media": "Medios ({{ count }})",
+      "starred": "Favoritos ({{ count }})"
+    },
+    "noMedia": "No hay ningún archivo multimedia compartido en este chat.",
+    "noStarred": "No hay ningún mensaje destacado en este chat.",
+    "blockedBanner": "Has bloqueado a este usuario",
+    "blockUser": "Bloquear usuario",
+    "reportSent": "Notificación enviada",
+    "reportUser": "Denunciar a un usuario",
+    "confirmBlock": "¿Quieres bloquear a {{ name }}? Ya no podréis escribiros.",
+    "yesBlock": "Sí, bloquea",
+    "report": "Denuncia a {{ name }}",
+    "reasons": {
+      "spam": "Spam",
+      "harassment": "Acoso",
+      "inappropriate": "Contenido inapropiado",
+      "fakeProfile": "Perfil falso",
+      "other": "Otros"
+    },
+    "detailsPlaceholder": "Datos adicionales (opcional)",
+    "submitReport": "Enviar aviso"
+  },
+  "main": {
+    "ageDenied": {
+      "title": "Acceso no permitido",
+      "text": "Lo sentimos, esta aplicación es solo para usuarios mayores de edad (18+)."
+    },
+    "ageGate": {
+      "title": "Verificación de la edad",
+      "text": "Para acceder a esta aplicación, tienes que tener al menos <strong>18 años</strong>.",
+      "question": "¿Eres mayor de edad?",
+      "yes": "Sí, tengo 18 años o más",
+      "no": "No, soy menor de edad"
+    },
+    "demoBanner": "<strong>Aplicación de demostración</strong> — No introduzcas datos personales reales. Las cuentas que lleven inactivas más de 2 meses se eliminan automáticamente.",
+    "nav": {
+      "username": "Tu nombre de usuario",
+      "changePhoto": "Cambiar foto de perfil",
+      "profile": "Perfil",
+      "settings": "Configuración"
+    },
+    "header": {
+      "back": "Atrás",
+      "backAria": "Volver a la lista de chats",
+      "members": "{{ count }} miembros",
+      "search": "Buscar en el chat",
+      "voiceCall": "Llamada de voz",
+      "videoCall": "Videollamada"
+    },
+    "search": {
+      "placeholder": "Buscar en la conversación…",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "close": "Cerrar búsqueda"
+    },
+    "message": {
+      "fallbackQuote": "Mensaje",
+      "forwarded": "Reenviado",
+      "deleted": "Mensaje eliminado",
+      "edited": "(modificado)"
+    },
+    "jumpToLatest": "Mensajes nuevos",
+    "request": {
+      "rejected": "Solicitud de chat rechazada.",
+      "wantsToChat": "{{ name }} Quiere empezar a chatear contigo."
+    },
+    "recording": {
+      "stop": "Ferma",
+      "discard": "Descartar"
+    },
+    "edit": {
+      "placeholder": "Edita el mensaje…",
+      "cancel": "Deshacer cambio",
+      "save": "Guardar"
+    },
+    "input": {
+      "attach": "Adjunta un archivo",
+      "emoji": "Emoji",
+      "placeholder": "Escribe un mensaje…",
+      "limitReached": "Se ha alcanzado el límite de mensajes de solicitud",
+      "send": "Enviar",
+      "voice": "Vocal"
+    },
+    "requestHint": "{{ sent }}/3 mensajes de solicitud enviados — a la espera de que {{ name }} los acepte",
+    "empty": {
+      "subtitle": "Elige un chat para empezar a chatear"
+    },
+    "dates": {
+      "today": "Hoy",
+      "yesterday": "Ayer"
+    },
+    "bug": {
+      "unavailable": "Por ahora, no puedes informar de errores en este entorno.",
+      "prefix": "Notificación de error: "
+    },
+    "confirmDelete": "¿Quieres borrar este mensaje?"
+  }
+}

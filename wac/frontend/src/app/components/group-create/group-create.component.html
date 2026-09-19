@@ -1,12 +1,12 @@
 <div class="group-create-overlay" (click)="close()">
   <div class="group-create-box" (click)="$event.stopPropagation()">
-    <button class="group-create-close" (click)="close()" aria-label="Chiudi">✕</button>
-    <h3 class="group-create-title">Nuovo gruppo</h3>
+    <button class="group-create-close" (click)="close()" [attr.aria-label]="'common.close' | transloco">✕</button>
+    <h3 class="group-create-title">{{ 'groupCreate.title' | transloco }}</h3>
 
     <input
       type="text"
       class="group-create-name-input"
-      placeholder="Nome del gruppo"
+      [placeholder]="'groupCreate.namePlaceholder' | transloco"
       maxlength="255"
       [(ngModel)]="groupName"
     >
@@ -29,7 +29,7 @@
           }
         </div>
       } @empty {
-        <p class="group-create-empty">Nessun contatto disponibile.</p>
+        <p class="group-create-empty">{{ 'groupCreate.empty' | transloco }}</p>
       }
     </div>
 
@@ -38,7 +38,7 @@
     }
 
     <button class="group-create-submit" [disabled]="!canCreate()" (click)="create()">
-      {{ creating ? 'Creazione…' : 'Crea gruppo (' + selectedIds.size + ')' }}
+      {{ creating ? ('groupCreate.creating' | transloco) : ('groupCreate.submit' | transloco: { count: selectedIds.size }) }}
     </button>
   </div>
 </div>

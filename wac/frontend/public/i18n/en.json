@@ -1,0 +1,285 @@
+{
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "accept": "Accept",
+    "reject": "Decline",
+    "loading": "Loading…",
+    "online": "Online",
+    "offline": "Offline",
+    "logout": "Log Out"
+  },
+  "media": {
+    "video": "🎥 Video",
+    "voice": "🎤 Voice message",
+    "photo": "📷 Photo"
+  },
+  "errors": {
+    "recordingNotStarted": "Voice memo recording did not start: {{ error }}",
+    "audioPlaybackBlocked": "Call audio playback blocked by the browser: {{ error }}",
+    "videoPlaybackBlocked": "Video call playback blocked by the browser: {{ error }}"
+  },
+  "notifications": {
+    "newMessage": "New message",
+    "sentPhoto": "He sent you a photo",
+    "sentVideo": "He sent you a video",
+    "sentVoice": "He sent you a voice message",
+    "newRequest": "New chat request",
+    "wantsToChat": "He wants to start a chat with you",
+    "newGroup": "New Group",
+    "addedToGroup": "You've been added to a group",
+    "incomingCall": "Incoming call",
+    "incomingVideoCall": "Incoming video call"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": "Topic",
+    "language": "Language",
+    "chatBackground": "Chat Background",
+    "reportBug": "Report a bug",
+    "themes": {
+      "pio-light": "WacChat Light",
+      "pio-dark": "WacChat Dark",
+      "blue": "Classic Blue",
+      "light": "White / Light",
+      "dark": "Black / Dark",
+      "green": "Green",
+      "indigo": "Indigo",
+      "magenta": "Magenta",
+      "crimson": "Cardinal Red",
+      "earth": "Earth"
+    },
+    "backgrounds": {
+      "none": "No one",
+      "birds-solid": "Little Birds",
+      "birds-red": "Little Red Birds",
+      "birds-outline": "Little Birds Side Dish"
+    }
+  },
+  "sessionBlocked": {
+    "title": "Session is already active",
+    "text": "You already have a session open on another device or in another tab. Close that session to continue here, or try again if you've already done so.",
+    "retry": "Try again",
+    "checking": "Check…"
+  },
+  "replyPreview": {
+    "cancel": "Cancel reply"
+  },
+  "forwardPicker": {
+    "title": "Forward to…",
+    "empty": "No chat available."
+  },
+  "audioPlayer": {
+    "pause": "Pause",
+    "play": "Play"
+  },
+  "errorLog": {
+    "title": "Error logs",
+    "clear": "Clear",
+    "empty": "No errors were recorded."
+  },
+  "lightbox": {
+    "zoomOut": "Reduce",
+    "zoomIn": "Enlarge"
+  },
+  "callInvitee": {
+    "titleVideo": "Who would you like to invite to the video call?",
+    "titleVoice": "Who would you like to invite to the voice call?",
+    "hint": "Up to{{ count }}s.",
+    "empty": "There are no other members in the group.",
+    "submit": "Call ({{ count }})"
+  },
+  "messageActions": {
+    "title": "Actions",
+    "react": "Respond",
+    "star": "Add to Favorites",
+    "unstar": "Remove from Favorites",
+    "reply": "Reply",
+    "edit": "Edit",
+    "delete": "Delete",
+    "forward": "Forward",
+    "copy": "Copy"
+  },
+  "groupCreate": {
+    "title": "New Group",
+    "namePlaceholder": "Group Name",
+    "empty": "No contact information available.",
+    "creating": "Creation…",
+    "submit": "Create group ({{ count }})",
+    "errors": {
+      "create": "Unable to create the group. Please try again."
+    }
+  },
+  "groupMembers": {
+    "title": "Group Members",
+    "you": "(you)",
+    "admin": "Admin",
+    "leave": "Leave the group",
+    "remove": "Remove from the group",
+    "add": "Add a member",
+    "emptyAdd": "No other contacts to add."
+  },
+  "avatarUpload": {
+    "title": "Profile photo",
+    "use": "Use this photo",
+    "upload": "Upload a photo",
+    "remove": "Remove photo",
+    "errors": {
+      "format": "Unsupported format. Please use JPG, PNG, or WebP.",
+      "size": "The image is larger than 5 MB.",
+      "upload": "Upload failed. Please try again.",
+      "remove": "Removal failed. Please try again."
+    }
+  },
+  "usernameSetup": {
+    "title": "Choose your username",
+    "text": "Your username is unique and will be displayed to other users in place of your name. You can use lowercase letters, numbers, underscores, hyphens, and periods (3–20 characters).",
+    "placeholder": "your_username",
+    "available": "Available",
+    "taken": "Username already in use",
+    "invalid": "Only lowercase letters, numbers, _, ., and - (minimum 3 characters)",
+    "saving": "Save…",
+    "continue": "Continue"
+  },
+  "call": {
+    "incomingVideo": "Incoming video call…",
+    "incomingVoice": "Incoming voice call…",
+    "calling": "Call in progress…",
+    "ringing": "It rings…",
+    "reject": "Decline",
+    "accept": "Accept",
+    "mute": "Silent",
+    "hangUp": "Hang up"
+  },
+  "chatList": {
+    "title": "Chat",
+    "newChat": "New Chat",
+    "newGroup": "New Group",
+    "search": "Search…",
+    "searchAria": "Search",
+    "filters": {
+      "all": "All",
+      "unread": "Unread",
+      "favorites": "Favorites",
+      "blocked": "Blocked",
+      "archived": "Archived"
+    },
+    "unblock": "Unlock",
+    "noBlocked": "No users have been blocked.",
+    "incomingRequests": "Incoming Requests ({{ count }})",
+    "favorite": "Favorite",
+    "muteNotifications": "Mute Notifications",
+    "archive": "File",
+    "pending": "Waiting",
+    "lastSeen": "Source: {{ date }}",
+    "empty": "No chats yet…"
+  },
+  "userCard": {
+    "copyUsername": "Copy username",
+    "memberSince": "Member since {{ date }}",
+    "lastSeen": "Last accessed{{ date }}",
+    "neverConnected": "Never connected",
+    "requestSent": "Request Sent",
+    "sendRequest": "Send a chat request",
+    "mute": "Mute Notifications",
+    "unmute": "Re-enable notifications",
+    "tabs": {
+      "info": "Info",
+      "media": "Media ({{ count }})",
+      "starred": "Favorites ({{ count }})"
+    },
+    "noMedia": "No media has been shared in this chat.",
+    "noStarred": "There are no favorite messages in this chat.",
+    "blockedBanner": "You have blocked this user",
+    "blockUser": "Block User",
+    "reportSent": "Report Sent",
+    "reportUser": "Report User",
+    "confirmBlock": "Do you want to block {{ name }}? You won't be able to message each other anymore.",
+    "yesBlock": "Yes, it blocks",
+    "report": "Report {{ name }}",
+    "reasons": {
+      "spam": "Spam",
+      "harassment": "Harassment",
+      "inappropriate": "Inappropriate Content",
+      "fakeProfile": "Fake Profile",
+      "other": "Other"
+    },
+    "detailsPlaceholder": "Additional details (optional)",
+    "submitReport": "Submit a Report"
+  },
+  "main": {
+    "ageDenied": {
+      "title": "Access Denied",
+      "text": "We're sorry, but this app is for users 18 and older."
+    },
+    "ageGate": {
+      "title": "Age Verification",
+      "text": "You must be at least <strong>18 years old</strong> to access this app.",
+      "question": "Are you of legal age?",
+      "yes": "Yes, I am 18 years old or older",
+      "no": "No, I'm a minor"
+    },
+    "demoBanner": "<strong>Demo app</strong> — Do not enter any real personal information. Accounts that have been inactive for more than 2 months are automatically deleted.",
+    "nav": {
+      "username": "Your username",
+      "changePhoto": "Change Profile Picture",
+      "profile": "Profile",
+      "settings": "Settings"
+    },
+    "header": {
+      "back": "Back",
+      "backAria": "Back to the chat list",
+      "members": "{{ count }} members",
+      "search": "Search the chat",
+      "voiceCall": "Voice call",
+      "videoCall": "Video Call"
+    },
+    "search": {
+      "placeholder": "Search the conversation…",
+      "previous": "Previous",
+      "next": "Next",
+      "close": "Close Search"
+    },
+    "message": {
+      "fallbackQuote": "Message",
+      "forwarded": "Forwarded",
+      "deleted": "Message deleted",
+      "edited": "(edited)"
+    },
+    "jumpToLatest": "New messages",
+    "request": {
+      "rejected": "Chat request declined.",
+      "wantsToChat": "{{ name }} wants to start a chat with you."
+    },
+    "recording": {
+      "stop": "Stop",
+      "discard": "Discard"
+    },
+    "edit": {
+      "placeholder": "Edit the message…",
+      "cancel": "Cancel edit",
+      "save": "Save"
+    },
+    "input": {
+      "attach": "Attach file",
+      "emoji": "Emoji",
+      "placeholder": "Write a message…",
+      "limitReached": "Request message limit reached",
+      "send": "Send",
+      "voice": "Vowel"
+    },
+    "requestHint": "{{ sent }}/3 request messages sent — waiting for {{ name }} to accept",
+    "empty": {
+      "subtitle": "Select a chat to start messaging"
+    },
+    "dates": {
+      "today": "Today",
+      "yesterday": "Yesterday"
+    },
+    "bug": {
+      "unavailable": "Bug reporting is currently unavailable in this environment.",
+      "prefix": "Bug report: "
+    },
+    "confirmDelete": "Delete this message?"
+  }
+}

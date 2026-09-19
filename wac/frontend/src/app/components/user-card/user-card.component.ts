@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/services/user.service';
 import { UserResponse } from '../../services/models/user-response';
@@ -10,14 +9,18 @@ import { ModerationService } from '../../services/services/moderation.service';
 import { UserReportRequest } from '../../services/models/user-report-request';
 import { KeycloakService } from '../../utils/keycloak/keycloak.service';
 import { MuteService } from '../../utils/mute/mute.service';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LocalDatePipe } from '../../utils/i18n/local-date.pipe';
+import { LanguageService } from '../../utils/i18n/language.service';
 
 @Component({
   selector: 'app-user-card',
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.scss',
-  imports: [DatePipe, FormsModule]
+  imports: [TranslocoPipe, LocalDatePipe, FormsModule]
 })
 export class UserCardComponent implements OnChanges {
+  protected readonly i18n = inject(LanguageService);
 
   @Input() userId: string | null = null;
   @Input() chatId?: string;

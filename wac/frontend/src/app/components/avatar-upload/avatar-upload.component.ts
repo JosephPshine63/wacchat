@@ -1,6 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, inject } from '@angular/core';
 import { UserService } from '../../services/services/user.service';
-
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LanguageService } from '../../utils/i18n/language.service';
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 const MAX_SIZE_BYTES = 5 * 1024 * 1024;
 
@@ -8,9 +9,10 @@ const MAX_SIZE_BYTES = 5 * 1024 * 1024;
   selector: 'app-avatar-upload',
   templateUrl: './avatar-upload.component.html',
   styleUrl: './avatar-upload.component.scss',
-  imports: []
+  imports: [TranslocoPipe]
 })
 export class AvatarUploadComponent implements OnDestroy {
+  protected readonly i18n = inject(LanguageService);
 
   @Input() currentAvatarUrl?: string;
   @Output() avatarChanged = new EventEmitter<string | undefined>();
@@ -41,12 +43,12 @@ export class AvatarUploadComponent implements OnDestroy {
     if (!file) return;
 
     if (!ALLOWED_TYPES.includes(file.type)) {
-      this.errorMessage = 'Formato non supportato. Usa jpg, png o webp.';
+      this.errorMessage = this.i18n.translate('avatarUpload.errors.format');
       input.value = '';
       return;
     }
     if (file.size > MAX_SIZE_BYTES) {
-      this.errorMessage = "L'immagine supera i 5MB.";
+      this.errorMessage = this.i18n.translate('avatarUpload.errors.size');
       input.value = '';
       return;
     }
@@ -70,7 +72,7 @@ export class AvatarUploadComponent implements OnDestroy {
       },
       error: () => {
         this.uploading = false;
-        this.errorMessage = 'Caricamento non riuscito. Riprova.';
+        this.errorMessage = this.i18n.translate('avatarUpload.errors.upload');
       }
     });
   }
@@ -101,7 +103,7 @@ export class AvatarUploadComponent implements OnDestroy {
       },
       error: () => {
         this.uploading = false;
-        this.errorMessage = 'Rimozione non riuscita. Riprova.';
+        this.errorMessage = this.i18n.translate('avatarUpload.errors.remove');
       }
     });
   }

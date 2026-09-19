@@ -15,6 +15,9 @@ import {GlobalErrorHandler} from './utils/error-log/global-error-handler';
 import {KeycloakService} from './utils/keycloak/keycloak.service';
 import { environment } from '../environments/environment';
 import { ApiConfiguration } from './services/api-configuration';
+import { provideTransloco } from '@jsverse/transloco';
+import { TranslocoHttpLoader } from './utils/i18n/transloco-loader';
+import { LanguageService, SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang } from './utils/i18n/language.service';
 
 export function kcFactory(kcService: KeycloakService) {
   return () => kcService.init();
@@ -27,6 +30,19 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([keycloakHttpInterceptor, errorLogInterceptor])
     ),
+    provideTransloco({
+      config: {
+        availableLangs: [...SUPPORTED_LANGS],
+        defaultLang: DEFAULT_LANG,
+        fallbackLang: DEFAULT_LANG,
+        missingHandler: { useFallbackTranslation: true },
+        reRenderOnLangChange: true,
+        prodMode: environment.production,
+      },
+      loader: TranslocoHttpLoader,
+    }),
+    // Load the JSON dictionary before first render so no raw keys ever flash on screen.
+    provideAppInitializer(() => inject(LanguageService).setLanguage(detectInitialLang())),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: ApiConfiguration, useValue: { rootUrl: environment.apiRootUrl } },
     provideAppInitializer(() => {

@@ -1,29 +1,29 @@
 <div class="chat-list-header">
   <div class="header-top">
-    <h3 class="header-title">Chat</h3>
+    <h3 class="header-title">{{ 'chatList.title' | transloco }}</h3>
     @if (!searchNewContact) {
-      <button class="header-action-btn" (click)="searchContact()" title="Nuova chat">
+      <button class="header-action-btn" (click)="searchContact()" [title]="'chatList.newChat' | transloco">
         <i class="fas fa-comment-medical"></i>
       </button>
-      <button class="header-action-btn" (click)="requestCreateGroup()" title="Nuovo gruppo">
+      <button class="header-action-btn" (click)="requestCreateGroup()" [title]="'chatList.newGroup' | transloco">
         <i class="fas fa-users"></i>
       </button>
     } @else {
-      <button class="header-action-btn" (click)="searchNewContact = false" title="Chiudi">
+      <button class="header-action-btn" (click)="searchNewContact = false" [title]="'common.close' | transloco">
         <i class="fas fa-xmark"></i>
       </button>
     }
   </div>
   <div class="search-box">
     <i class="fas fa-search search-icon"></i>
-    <input type="text" class="search-input" placeholder="Cerca…" aria-label="Cerca" [(ngModel)]="searchQuery">
+    <input type="text" class="search-input" [placeholder]="'chatList.search' | transloco" [attr.aria-label]="'chatList.searchAria' | transloco" [(ngModel)]="searchQuery">
   </div>
   <div class="filter-pills">
-    <span class="filter-pill" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">Tutte</span>
-    <span class="filter-pill" [class.active]="activeFilter === 'unread'" (click)="setFilter('unread')">Non letti</span>
-    <span class="filter-pill" [class.active]="activeFilter === 'favorites'" (click)="setFilter('favorites')">Preferiti</span>
-    <span class="filter-pill" [class.active]="activeFilter === 'blocked'" (click)="setFilter('blocked')">Bloccati</span>
-    <span class="filter-pill" [class.active]="activeFilter === 'archived'" (click)="setFilter('archived')">Archiviate</span>
+    <span class="filter-pill" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">{{ 'chatList.filters.all' | transloco }}</span>
+    <span class="filter-pill" [class.active]="activeFilter === 'unread'" (click)="setFilter('unread')">{{ 'chatList.filters.unread' | transloco }}</span>
+    <span class="filter-pill" [class.active]="activeFilter === 'favorites'" (click)="setFilter('favorites')">{{ 'chatList.filters.favorites' | transloco }}</span>
+    <span class="filter-pill" [class.active]="activeFilter === 'blocked'" (click)="setFilter('blocked')">{{ 'chatList.filters.blocked' | transloco }}</span>
+    <span class="filter-pill" [class.active]="activeFilter === 'archived'" (click)="setFilter('archived')">{{ 'chatList.filters.archived' | transloco }}</span>
   </div>
 </div>
 
@@ -44,20 +44,20 @@
               <span class="item-name">{{ blocked.username ? '@' + blocked.username : blocked.id }}</span>
             </div>
             <div class="item-bottom chat-request-buttons">
-              <button class="chat-request-reject-btn" (click)="unblockUser(blocked, $event)">Sblocca</button>
+              <button class="chat-request-reject-btn" (click)="unblockUser(blocked, $event)">{{ 'chatList.unblock' | transloco }}</button>
             </div>
           </div>
         </div>
       }
     } @else {
       <div class="empty-list">
-        <p>Nessun utente bloccato.</p>
+        <p>{{ 'chatList.noBlocked' | transloco }}</p>
       </div>
     }
   } @else {
   @if (!searchNewContact && incomingRequests().length) {
     <div class="chat-requests-section">
-      <span class="chat-requests-title">Richieste in arrivo ({{ incomingRequests().length }})</span>
+      <span class="chat-requests-title">{{ 'chatList.incomingRequests' | transloco: { count: incomingRequests().length } }}</span>
       @for (chat of incomingRequests(); track chat) {
         <div class="chat-item chat-request-item" (click)="chatClicked(chat)">
           <div class="item-avatar" (click)="onAvatarClick($event, otherUserId(chat))">
@@ -72,8 +72,8 @@
               <span class="item-name">{{ chat.name }}</span>
             </div>
             <div class="item-bottom chat-request-buttons">
-              <button class="chat-request-accept-btn" (click)="acceptRequest(chat, $event)">Accetta</button>
-              <button class="chat-request-reject-btn" (click)="rejectRequest(chat, $event)">Rifiuta</button>
+              <button class="chat-request-accept-btn" (click)="acceptRequest(chat, $event)">{{ 'common.accept' | transloco }}</button>
+              <button class="chat-request-reject-btn" (click)="rejectRequest(chat, $event)">{{ 'common.reject' | transloco }}</button>
             </div>
           </div>
         </div>
@@ -93,20 +93,20 @@
         <div class="item-body">
           <div class="item-top">
             <span class="item-name">{{ chat.name }}</span>
-            <button class="favorite-star-btn" [class.active]="chat.favorite" (click)="toggleFavorite(chat, $event)" title="Preferito">
+            <button class="favorite-star-btn" [class.active]="chat.favorite" (click)="toggleFavorite(chat, $event)" [title]="'chatList.favorite' | transloco">
               <i class="fa-solid fa-star"></i>
             </button>
-            <button class="mute-bell-btn" [class.active]="isMuted(chat)" (click)="toggleMute(chat, $event)" title="Silenzia notifiche">
+            <button class="mute-bell-btn" [class.active]="isMuted(chat)" (click)="toggleMute(chat, $event)" [title]="'chatList.muteNotifications' | transloco">
               <i class="fa-solid" [class.fa-bell-slash]="isMuted(chat)" [class.fa-bell]="!isMuted(chat)"></i>
             </button>
-            <button class="archive-btn" [class.active]="chat.archived" (click)="toggleArchive(chat, $event)" title="Archivia">
+            <button class="archive-btn" [class.active]="chat.archived" (click)="toggleArchive(chat, $event)" [title]="'chatList.archive' | transloco">
               <i class="fa-solid fa-box-archive"></i>
             </button>
             @if (isPendingOutgoing(chat)) {
-              <span class="item-time pending-badge">In attesa</span>
+              <span class="item-time pending-badge">{{ 'chatList.pending' | transloco }}</span>
             } @else {
               <span class="item-time" [class.unread]="chat.unreadCount && chat.unreadCount > 0">
-                {{ chat.lastMessageTime | date:'HH:mm' }}
+                {{ chat.lastMessageTime | localDate:'time' }}
               </span>
             }
           </div>
@@ -137,9 +137,9 @@
           </div>
           <div class="item-bottom">
             @if (contact.online) {
-              <span class="item-preview online-label">Online</span>
+              <span class="item-preview online-label">{{ 'common.online' | transloco }}</span>
             } @else {
-              <span class="item-preview">Visto {{ contact.lastSeen | date:'dd.MM.yy HH:mm' }}</span>
+              <span class="item-preview">{{ 'chatList.lastSeen' | transloco: { date: (contact.lastSeen | localDate:'dateTimeShort') } }}</span>
             }
           </div>
         </div>
@@ -147,7 +147,7 @@
     }
   } @else {
     <div class="empty-list">
-      <p>Nessuna chat ancora…</p>
+      <p>{{ 'chatList.empty' | transloco }}</p>
     </div>
   }
   }

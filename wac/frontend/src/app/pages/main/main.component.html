@@ -4,30 +4,27 @@
   <div class="age-denied-page">
     <div class="age-denied-box">
       <i class="fa-solid fa-ban age-denied-icon"></i>
-      <h2>Accesso non consentito</h2>
-      <p>Spiacenti, questa applicazione è riservata agli utenti maggiorenni (18+).</p>
+      <h2>{{ 'main.ageDenied.title' | transloco }}</h2>
+      <p>{{ 'main.ageDenied.text' | transloco }}</p>
     </div>
   </div>
 } @else if (!ageVerified) {
   <div class="age-gate-overlay">
     <div class="age-gate-box">
-      <h2>Verifica dell'età</h2>
-      <p>Per accedere a questa applicazione devi avere almeno <strong>18 anni</strong>.</p>
-      <p class="age-gate-question">Sei maggiorenne?</p>
+      <h2>{{ 'main.ageGate.title' | transloco }}</h2>
+      <p [innerHTML]="'main.ageGate.text' | transloco"></p>
+      <p class="age-gate-question">{{ 'main.ageGate.question' | transloco }}</p>
       <div class="age-gate-buttons">
-        <button class="age-btn age-btn-yes" (click)="confirmAge()">Sì, ho 18 anni o più</button>
-        <button class="age-btn age-btn-no" (click)="denyAge()">No, sono minorenne</button>
+        <button class="age-btn age-btn-yes" (click)="confirmAge()">{{ 'main.ageGate.yes' | transloco }}</button>
+        <button class="age-btn age-btn-no" (click)="denyAge()">{{ 'main.ageGate.no' | transloco }}</button>
       </div>
     </div>
   </div>
 } @else {
   @if (showDemoBanner) {
     <div class="demo-banner">
-      <span>
-        <strong>App demo</strong> — Non inserire dati personali reali.
-        Gli account inattivi per più di 2 mesi vengono eliminati automaticamente.
-      </span>
-      <button class="demo-banner-close" (click)="dismissBanner()" aria-label="Chiudi">✕</button>
+      <span [innerHTML]="'main.demoBanner' | transloco"></span>
+      <button class="demo-banner-close" (click)="dismissBanner()" [attr.aria-label]="'common.close' | transloco">✕</button>
     </div>
   }
   @if (showUsernameModal) {
@@ -106,23 +103,23 @@
       </div>
       <div class="nav-bottom">
         @if (currentUser?.username) {
-          <span class="nav-username" title="Il tuo username">&#64;{{ currentUser!.username }}</span>
+          <span class="nav-username" [title]="'main.nav.username' | transloco">&#64;{{ currentUser!.username }}</span>
         }
-        <div class="nav-avatar" (click)="showAvatarUpload = true" title="Cambia foto profilo">
+        <div class="nav-avatar" (click)="showAvatarUpload = true" [title]="'main.nav.changePhoto' | transloco">
           @if (currentUser?.avatarUrl) {
             <img [src]="currentUser!.avatarUrl" alt="">
           } @else {
             <span>{{ (currentUser?.username || currentUser?.firstName || '?')!.charAt(0).toUpperCase() }}</span>
           }
         </div>
-        <button class="nav-icon-btn" (click)="userProfile()" title="Profilo">
+        <button class="nav-icon-btn" (click)="userProfile()" [title]="'main.nav.profile' | transloco">
           <i class="fa-solid fa-user"></i>
         </button>
-        <button class="nav-icon-btn" (click)="showSettings = true" title="Impostazioni">
+        <button class="nav-icon-btn" (click)="showSettings = true" [title]="'main.nav.settings' | transloco">
           <i class="fa-solid fa-palette"></i>
         </button>
         <app-error-log-menu></app-error-log-menu>
-        <button class="nav-icon-btn" (click)="logout()" title="Esci">
+        <button class="nav-icon-btn" (click)="logout()" [title]="'common.logout' | transloco">
           <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>
@@ -142,7 +139,7 @@
     <main class="chat-area">
       @if (selectedChat.id) {
         <header class="chat-header">
-          <button class="back-btn" (click)="goBack()" title="Indietro" aria-label="Torna alla lista chat">
+          <button class="back-btn" (click)="goBack()" [title]="'main.header.back' | transloco" [attr.aria-label]="'main.header.backAria' | transloco">
             <i class="fa-solid fa-arrow-left"></i>
           </button>
           <div class="chat-header-avatar" (click)="onChatHeaderAvatarClick()">
@@ -156,25 +153,25 @@
             <span class="chat-header-name">{{ selectedChat.name }}</span>
             <div class="chat-header-status">
               @if (selectedChat.type === 'GROUP') {
-                <span class="status-text">{{ selectedChat.members?.length || 0 }} membri</span>
+                <span class="status-text">{{ 'main.header.members' | transloco: { count: selectedChat.members?.length || 0 } }}</span>
               } @else if (selectedChat.recipientOnline) {
                 <span class="status-dot online"></span>
-                <span class="status-text">Online</span>
+                <span class="status-text">{{ 'common.online' | transloco }}</span>
               } @else {
                 <span class="status-dot offline"></span>
-                <span class="status-text">Offline</span>
+                <span class="status-text">{{ 'common.offline' | transloco }}</span>
               }
             </div>
           </div>
           <div class="chat-header-actions">
-            <button class="nav-icon-btn" (click)="toggleMessageSearch()" title="Cerca nella chat">
+            <button class="nav-icon-btn" (click)="toggleMessageSearch()" [title]="'main.header.search' | transloco">
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>
             @if (selectedChat.type !== 'GROUP') {
-              <button class="nav-icon-btn" [disabled]="!canCall()" (click)="startCall('AUDIO')" title="Chiamata vocale">
+              <button class="nav-icon-btn" [disabled]="!canCall()" (click)="startCall('AUDIO')" [title]="'main.header.voiceCall' | transloco">
                 <i class="fa-solid fa-phone"></i>
               </button>
-              <button class="nav-icon-btn" [disabled]="!canCall()" (click)="startCall('VIDEO')" title="Videochiamata">
+              <button class="nav-icon-btn" [disabled]="!canCall()" (click)="startCall('VIDEO')" [title]="'main.header.videoCall' | transloco">
                 <i class="fa-solid fa-video"></i>
               </button>
             }
@@ -186,7 +183,7 @@
             <input
               type="text"
               class="message-search-input"
-              placeholder="Cerca nella conversazione…"
+              [placeholder]="'main.search.placeholder' | transloco"
               [(ngModel)]="messageSearchQuery"
               (input)="onMessageSearchInput()"
             >
@@ -195,13 +192,13 @@
                 {{ searchMatchIndices.length > 0 ? (currentSearchMatchIndex + 1) + '/' + searchMatchIndices.length : '0/0' }}
               </span>
             }
-            <button class="input-icon-btn" [disabled]="searchMatchIndices.length === 0" (click)="jumpToPreviousMatch()" title="Precedente">
+            <button class="input-icon-btn" [disabled]="searchMatchIndices.length === 0" (click)="jumpToPreviousMatch()" [title]="'main.search.previous' | transloco">
               <i class="fa-solid fa-chevron-up"></i>
             </button>
-            <button class="input-icon-btn" [disabled]="searchMatchIndices.length === 0" (click)="jumpToNextMatch()" title="Successivo">
+            <button class="input-icon-btn" [disabled]="searchMatchIndices.length === 0" (click)="jumpToNextMatch()" [title]="'main.search.next' | transloco">
               <i class="fa-solid fa-chevron-down"></i>
             </button>
-            <button class="input-icon-btn" (click)="toggleMessageSearch()" title="Chiudi ricerca">
+            <button class="input-icon-btn" (click)="toggleMessageSearch()" [title]="'main.search.close' | transloco">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
@@ -237,13 +234,13 @@
                   ></app-message-actions-menu>
                 }
                 @if (message.replyToId) {
-                  <div class="reply-quote-snippet">{{ findMessageById(message.replyToId)?.content || 'Messaggio' }}</div>
+                  <div class="reply-quote-snippet">{{ findMessageById(message.replyToId)?.content || ('main.message.fallbackQuote' | transloco) }}</div>
                 }
                 @if (message.forwarded) {
-                  <span class="forwarded-badge"><i class="fa-solid fa-share"></i> Inoltrato</span>
+                  <span class="forwarded-badge"><i class="fa-solid fa-share"></i> {{ 'main.message.forwarded' | transloco }}</span>
                 }
                 @if (message.deleted) {
-                  <span class="bubble-text deleted-placeholder"><i class="fa-solid fa-ban"></i> Messaggio eliminato</span>
+                  <span class="bubble-text deleted-placeholder"><i class="fa-solid fa-ban"></i> {{ 'main.message.deleted' | transloco }}</span>
                 } @else if (message.type === 'TEXT') {
                   <span class="bubble-text">{{ message.content }}</span>
                 } @else if (message.type === 'VIDEO') {
@@ -254,9 +251,9 @@
                   <img class="bubble-image cursor-pointer" [src]="mediaSrc(message.media![0], message.type)" alt="" (click)="openLightbox(message)">
                 }
                 <span class="bubble-meta">
-                  {{ message.createdAt | date:'HH:mm' }}&nbsp;
+                  {{ message.createdAt | localDate:'time' }}&nbsp;
                   @if (message.editedAt) {
-                    <span class="edited-label">(modificato)</span>
+                    <span class="edited-label">{{ 'main.message.edited' | transloco }}</span>
                   }
                   @if (message.state === 'SENT') {
                     <i class="fas fa-check check-icon"></i>
@@ -305,13 +302,13 @@
                   ></app-message-actions-menu>
                 }
                 @if (message.replyToId) {
-                  <div class="reply-quote-snippet">{{ findMessageById(message.replyToId)?.content || 'Messaggio' }}</div>
+                  <div class="reply-quote-snippet">{{ findMessageById(message.replyToId)?.content || ('main.message.fallbackQuote' | transloco) }}</div>
                 }
                 @if (message.forwarded) {
-                  <span class="forwarded-badge"><i class="fa-solid fa-share"></i> Inoltrato</span>
+                  <span class="forwarded-badge"><i class="fa-solid fa-share"></i> {{ 'main.message.forwarded' | transloco }}</span>
                 }
                 @if (message.deleted) {
-                  <span class="bubble-text deleted-placeholder"><i class="fa-solid fa-ban"></i> Messaggio eliminato</span>
+                  <span class="bubble-text deleted-placeholder"><i class="fa-solid fa-ban"></i> {{ 'main.message.deleted' | transloco }}</span>
                 } @else if (message.type === 'TEXT') {
                   <span class="bubble-text">{{ message.content }}</span>
                 } @else if (message.type === 'VIDEO') {
@@ -322,9 +319,9 @@
                   <img class="bubble-image cursor-pointer" [src]="mediaSrc(message.media![0], message.type)" alt="" (click)="openLightbox(message)">
                 }
                 <span class="bubble-meta">
-                  {{ message.createdAt | date:'HH:mm' }}
+                  {{ message.createdAt | localDate:'time' }}
                   @if (message.editedAt) {
-                    <span class="edited-label">(modificato)</span>
+                    <span class="edited-label">{{ 'main.message.edited' | transloco }}</span>
                   }
                 </span>
                 @if (message.reactions?.length) {
@@ -358,7 +355,7 @@
         </div>
         @if (isScrolledUp) {
           <button class="jump-to-latest-btn" (click)="jumpToLatest()">
-            <i class="fa-solid fa-arrow-down"></i> Nuovi messaggi
+            <i class="fa-solid fa-arrow-down"></i> {{ 'main.jumpToLatest' | transloco }}
           </button>
         }
 
@@ -368,34 +365,34 @@
 
         @if (isChatRejected()) {
           <div class="chat-request-banner">
-            <p>Richiesta di chat rifiutata.</p>
+            <p>{{ 'main.request.rejected' | transloco }}</p>
           </div>
         } @else if (isChatPending() && !isRequester()) {
           <div class="chat-request-banner">
-            <p>{{ selectedChat.name }} vuole iniziare una chat con te.</p>
+            <p>{{ 'main.request.wantsToChat' | transloco: { name: selectedChat.name } }}</p>
             <div class="chat-request-actions">
-              <button class="chat-request-accept" (click)="acceptSelectedChat()">Accetta</button>
-              <button class="chat-request-reject" (click)="rejectSelectedChat()">Rifiuta</button>
+              <button class="chat-request-accept" (click)="acceptSelectedChat()">{{ 'common.accept' | transloco }}</button>
+              <button class="chat-request-reject" (click)="rejectSelectedChat()">{{ 'common.reject' | transloco }}</button>
             </div>
           </div>
         } @else if (recordingState === 'recording') {
           <div class="recording-bar">
-            <button class="recording-cancel-btn" (click)="cancelRecording()" title="Annulla">
+            <button class="recording-cancel-btn" (click)="cancelRecording()" [title]="'common.cancel' | transloco">
               <i class="fa-solid fa-trash"></i>
             </button>
             <span class="recording-dot"></span>
             <span class="recording-timer">{{ recordingElapsedLabel() }}</span>
-            <button class="recording-stop-btn" (click)="stopRecording()" title="Ferma">
+            <button class="recording-stop-btn" (click)="stopRecording()" [title]="'main.recording.stop' | transloco">
               <i class="fa-solid fa-stop"></i>
             </button>
           </div>
         } @else if (recordingState === 'preview' || recordingState === 'sending') {
           <div class="voice-preview-bar">
             <app-audio-player [src]="recordedPreviewUrl!"></app-audio-player>
-            <button class="recording-cancel-btn" [disabled]="recordingState === 'sending'" (click)="discardRecording()" title="Scarta">
+            <button class="recording-cancel-btn" [disabled]="recordingState === 'sending'" (click)="discardRecording()" [title]="'main.recording.discard' | transloco">
               <i class="fa-solid fa-trash"></i>
             </button>
-            <button class="send-btn" [disabled]="recordingState === 'sending'" (click)="sendRecordedVoiceNote()" title="Invia">
+            <button class="send-btn" [disabled]="recordingState === 'sending'" (click)="sendRecordedVoiceNote()" [title]="'main.input.send' | transloco">
               <i class="fa-solid fa-paper-plane"></i>
             </button>
           </div>
@@ -404,20 +401,20 @@
             <input
               type="text"
               class="message-input"
-              placeholder="Modifica il messaggio…"
+              [placeholder]="'main.edit.placeholder' | transloco"
               [(ngModel)]="editContent"
               (keydown.enter)="confirmEdit()"
             >
-            <button class="recording-cancel-btn" (click)="cancelEdit()" title="Annulla modifica">
+            <button class="recording-cancel-btn" (click)="cancelEdit()" [title]="'main.edit.cancel' | transloco">
               <i class="fa-solid fa-xmark"></i>
             </button>
-            <button class="send-btn" [disabled]="!editContent.trim()" (click)="confirmEdit()" title="Salva">
+            <button class="send-btn" [disabled]="!editContent.trim()" (click)="confirmEdit()" [title]="'main.edit.save' | transloco">
               <i class="fa-solid fa-check"></i>
             </button>
           </div>
         } @else {
           <div class="input-bar">
-            <button class="input-icon-btn" [disabled]="isChatPending() && pendingLimitReached()" (click)="inputFile.click()" title="Allega file">
+            <button class="input-icon-btn" [disabled]="isChatPending() && pendingLimitReached()" (click)="inputFile.click()" [title]="'main.input.attach' | transloco">
               <i class="fas fa-paperclip"></i>
             </button>
             <input
@@ -428,7 +425,7 @@
               (change)="uploadMedia($event.target)"
             >
             <div class="emoji-wrapper" (click)="$event.stopPropagation()">
-              <button class="input-icon-btn" (click)="toggleEmojiPicker(messageInput)" title="Emoji">
+              <button class="input-icon-btn" (click)="toggleEmojiPicker(messageInput)" [title]="'main.input.emoji' | transloco">
                 <i class="fa-regular fa-face-smile"></i>
               </button>
               @if (showEmojis) {
@@ -446,25 +443,25 @@
               type="text"
               class="message-input"
               [disabled]="isChatPending() && pendingLimitReached()"
-              [placeholder]="isChatPending() && pendingLimitReached() ? 'Limite di messaggi di richiesta raggiunto' : 'Scrivi un messaggio…'"
+              [placeholder]="(isChatPending() && pendingLimitReached() ? 'main.input.limitReached' : 'main.input.placeholder') | transloco"
               [(ngModel)]="messageContent"
               (keydown)="keyDown($event)"
               (input)="onMessageInput()"
               (click)="onClick()"
             >
             @if (messageContent) {
-              <button class="send-btn" [disabled]="isChatPending() && pendingLimitReached()" (click)="sendMessage()" title="Invia">
+              <button class="send-btn" [disabled]="isChatPending() && pendingLimitReached()" (click)="sendMessage()" [title]="'main.input.send' | transloco">
                 <i class="fa-solid fa-paper-plane"></i>
               </button>
             } @else {
-              <button class="mic-btn" [disabled]="isChatPending() && pendingLimitReached()" (click)="startRecording()" title="Vocale">
+              <button class="mic-btn" [disabled]="isChatPending() && pendingLimitReached()" (click)="startRecording()" [title]="'main.input.voice' | transloco">
                 <i class="fa-solid fa-microphone"></i>
               </button>
             }
           </div>
           @if (isChatPending() && isRequester()) {
             <div class="chat-request-hint">
-              {{ selectedChat.pendingMessageCount || 0 }}/3 messaggi di richiesta inviati — in attesa che {{ selectedChat.name }} accetti
+              {{ 'main.requestHint' | transloco: { sent: selectedChat.pendingMessageCount || 0, name: selectedChat.name } }}
             </div>
           }
         }
@@ -474,7 +471,7 @@
             <i class="fa-solid fa-message"></i>
           </div>
           <h2 class="empty-state-title">WacChat</h2>
-          <p class="empty-state-sub">Seleziona una chat per iniziare a messaggiare</p>
+          <p class="empty-state-sub">{{ 'main.empty.subtitle' | transloco }}</p>
         </div>
       }
     </main>

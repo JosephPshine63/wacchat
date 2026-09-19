@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-
+import { TranslocoPipe } from '@jsverse/transloco';
 // Rough max height of the dropdown (5 items × ~36px + padding) — used as the
 // threshold to decide whether there's enough room below the button to open
 // downward, or whether it should flip upward instead.
@@ -13,6 +13,7 @@ const DROPDOWN_MIN_WIDTH = 148;
 @Component({
   selector: 'app-message-actions-menu',
   templateUrl: './message-actions-menu.component.html',
+  imports: [TranslocoPipe],
   styleUrl: './message-actions-menu.component.scss'
 })
 export class MessageActionsMenuComponent implements OnChanges {

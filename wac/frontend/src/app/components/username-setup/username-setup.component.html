@@ -3,10 +3,9 @@
     <div class="username-icon">
       <i class="fa-solid fa-at"></i>
     </div>
-    <h2 class="username-title">Scegli il tuo username</h2>
+    <h2 class="username-title">{{ 'usernameSetup.title' | transloco }}</h2>
     <p class="username-sub">
-      Il tuo username è unico e verrà mostrato agli altri utenti al posto del nome.
-      Puoi usare lettere minuscole, numeri, underscore, trattini e punti (3–20 caratteri).
+      {{ 'usernameSetup.text' | transloco }}
     </p>
 
     <div class="username-input-wrap">
@@ -14,7 +13,7 @@
       <input
         type="text"
         class="username-input"
-        placeholder="il_tuo_username"
+        [placeholder]="'usernameSetup.placeholder' | transloco"
         [(ngModel)]="username"
         (ngModelChange)="onInput()"
         maxlength="20"
@@ -35,11 +34,11 @@
 
     <div class="username-feedback">
       @if (checkState === 'available') {
-        <span class="feedback available">Disponibile</span>
+        <span class="feedback available">{{ 'usernameSetup.available' | transloco }}</span>
       } @else if (checkState === 'taken') {
-        <span class="feedback unavailable">Username già in uso</span>
+        <span class="feedback unavailable">{{ 'usernameSetup.taken' | transloco }}</span>
       } @else if (checkState === 'invalid') {
-        <span class="feedback unavailable">Solo lettere minuscole, numeri, _ . e - (min 3 caratteri)</span>
+        <span class="feedback unavailable">{{ 'usernameSetup.invalid' | transloco }}</span>
       }
     </div>
 
@@ -49,9 +48,9 @@
       (click)="submit()"
     >
       @if (submitting) {
-        <i class="fa-solid fa-spinner fa-spin"></i> Salvataggio…
+        <i class="fa-solid fa-spinner fa-spin"></i> {{ 'usernameSetup.saving' | transloco }}
       } @else {
-        Continua
+        {{ 'usernameSetup.continue' | transloco }}
       }
     </button>
   </div>

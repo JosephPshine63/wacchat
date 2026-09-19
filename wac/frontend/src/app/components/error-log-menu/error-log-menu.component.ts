@@ -1,10 +1,11 @@
 import { Component, HostListener } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { AppErrorEntry, ErrorLogService } from '../../utils/error-log/error-log.service';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LocalDatePipe } from '../../utils/i18n/local-date.pipe';
 
 @Component({
   selector: 'app-error-log-menu',
-  imports: [DatePipe],
+  imports: [TranslocoPipe, LocalDatePipe],
   templateUrl: './error-log-menu.component.html',
   styleUrl: './error-log-menu.component.scss'
 })

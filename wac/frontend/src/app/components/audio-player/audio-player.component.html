@@ -3,7 +3,7 @@
     type="button"
     class="audio-play-btn"
     (click)="togglePlay()"
-    [attr.aria-label]="playing ? 'Pausa' : 'Riproduci'"
+    [attr.aria-label]="(playing ? 'audioPlayer.pause' : 'audioPlayer.play') | transloco"
   >
     <i class="fa-solid" [class.fa-pause]="playing" [class.fa-play]="!playing"></i>
   </button>

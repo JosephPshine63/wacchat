@@ -9,12 +9,12 @@
         }
       </div>
       <h2 class="call-peer-name">{{ incomingCaller?.name }}</h2>
-      <p class="call-status-text">Chiamata {{ callType === 'VIDEO' ? 'video' : 'vocale' }} in arrivo…</p>
+      <p class="call-status-text">{{ (callType === 'VIDEO' ? 'call.incomingVideo' : 'call.incomingVoice') | transloco }}</p>
       <div class="call-actions">
-        <button class="call-btn call-btn-reject" (click)="rejected.emit()" title="Rifiuta">
+        <button class="call-btn call-btn-reject" (click)="rejected.emit()" [title]="'call.reject' | transloco">
           <i class="fa-solid fa-phone-slash"></i>
         </button>
-        <button class="call-btn call-btn-accept" (click)="accepted.emit()" title="Accetta">
+        <button class="call-btn call-btn-accept" (click)="accepted.emit()" [title]="'call.accept' | transloco">
           <i class="fa-solid fa-phone"></i>
         </button>
       </div>
@@ -67,12 +67,12 @@
       @if (participants.length === 1 && callType !== 'VIDEO') {
         <h2 class="call-peer-name">{{ participants[0].name }}</h2>
       }
-      <p class="call-status-text">{{ callState === 'outgoing' ? 'Chiamata in corso…' : elapsedLabel }}</p>
+      <p class="call-status-text">{{ callState === 'outgoing' ? ('call.calling' | transloco) : elapsedLabel }}</p>
       <div class="call-actions">
-        <button class="call-btn" (click)="toggleMute()" title="Muto">
+        <button class="call-btn" (click)="toggleMute()" [title]="'call.mute' | transloco">
           <i class="fa-solid" [class.fa-microphone]="!muted" [class.fa-microphone-slash]="muted"></i>
         </button>
-        <button class="call-btn call-btn-reject" (click)="hungUp.emit()" title="Riaggancia">
+        <button class="call-btn call-btn-reject" (click)="hungUp.emit()" [title]="'call.hangUp' | transloco">
           <i class="fa-solid fa-phone-slash"></i>
         </button>
       </div>

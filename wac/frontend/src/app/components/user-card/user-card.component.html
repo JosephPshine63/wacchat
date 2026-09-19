@@ -1,6 +1,6 @@
 <div class="user-card-overlay" (click)="close()">
   <div class="user-card-box" (click)="$event.stopPropagation()">
-    <button class="user-card-close" (click)="close()" aria-label="Chiudi">
+    <button class="user-card-close" (click)="close()" [attr.aria-label]="'common.close' | transloco">
       <i class="fas fa-xmark"></i>
     </button>
 
@@ -20,47 +20,47 @@
       @if (user.username) {
         <div class="user-card-username-row">
           <span class="user-card-username">&#64;{{ user.username }}</span>
-          <button class="user-card-copy-btn" (click)="copyUsername()" title="Copia username">
+          <button class="user-card-copy-btn" (click)="copyUsername()" [title]="'userCard.copyUsername' | transloco">
             <i class="fa-solid" [class.fa-copy]="!usernameCopied" [class.fa-check]="usernameCopied"></i>
           </button>
         </div>
       }
       @if (user.createdDate) {
-        <span class="user-card-member-since">Membro da {{ user.createdDate | date:'MMMM yyyy' }}</span>
+        <span class="user-card-member-since">{{ 'userCard.memberSince' | transloco: { date: (user.createdDate | localDate:'monthYear') } }}</span>
       }
       <div class="user-card-status">
         @if (user.online) {
           <span class="status-dot online"></span>
-          <span>Online</span>
+          <span>{{ 'common.online' | transloco }}</span>
         } @else if (user.lastSeen) {
           <span class="status-dot offline"></span>
-          <span>Ultimo accesso {{ user.lastSeen | date:'dd.MM.yy HH:mm' }}</span>
+          <span>{{ 'userCard.lastSeen' | transloco: { date: (user.lastSeen | localDate:'dateTimeShort') } }}</span>
         } @else {
           <span class="status-dot offline"></span>
-          <span>Mai connesso</span>
+          <span>{{ 'userCard.neverConnected' | transloco }}</span>
         }
       </div>
       @if (requestSent) {
-        <span class="user-card-request-sent">Richiesta inviata</span>
+        <span class="user-card-request-sent">{{ 'userCard.requestSent' | transloco }}</span>
       } @else {
-        <button class="user-card-request-btn" (click)="sendChatRequest()">Invia richiesta di chat</button>
+        <button class="user-card-request-btn" (click)="sendChatRequest()">{{ 'userCard.sendRequest' | transloco }}</button>
       }
 
       @if (chatId) {
         <button class="user-card-mute-btn" (click)="toggleMute()">
           <i class="fa-solid" [class.fa-bell-slash]="isMuted()" [class.fa-bell]="!isMuted()"></i>
-          {{ isMuted() ? 'Riattiva notifiche' : 'Silenzia notifiche' }}
+          {{ (isMuted() ? 'userCard.unmute' : 'userCard.mute') | transloco }}
         </button>
       }
 
       @if (chatMessages) {
         <div class="user-card-tabs">
-          <button type="button" [class.active]="activeTab==='info'" (click)="activeTab='info'">Info</button>
+          <button type="button" [class.active]="activeTab==='info'" (click)="activeTab='info'">{{ 'userCard.tabs.info' | transloco }}</button>
           <button type="button" [class.active]="activeTab==='media'" (click)="activeTab='media'">
-            Media ({{ mediaMessages().length }})
+            {{ 'userCard.tabs.media' | transloco: { count: mediaMessages().length } }}
           </button>
           <button type="button" [class.active]="activeTab==='starred'" (click)="activeTab='starred'">
-            <i class="fa-solid fa-star"></i> Preferiti ({{ starredMessages().length }})
+            <i class="fa-solid fa-star"></i> {{ 'userCard.tabs.starred' | transloco: { count: starredMessages().length } }}
           </button>
         </div>
 
@@ -75,7 +75,7 @@
                 }
               </div>
             } @empty {
-              <p class="user-card-empty">Nessun media condiviso in questa chat.</p>
+              <p class="user-card-empty">{{ 'userCard.noMedia' | transloco }}</p>
             }
           </div>
         }
@@ -89,10 +89,10 @@
                 } @else {
                   <span><i class="fa-solid fa-paperclip"></i> {{ m.type }}</span>
                 }
-                <span class="starred-date">{{ m.createdAt | date:'dd.MM.yy' }}</span>
+                <span class="starred-date">{{ m.createdAt | localDate:'dateShort' }}</span>
               </div>
             } @empty {
-              <p class="user-card-empty">Nessun messaggio preferito in questa chat.</p>
+              <p class="user-card-empty">{{ 'userCard.noStarred' | transloco }}</p>
             }
           </div>
         }
@@ -101,15 +101,15 @@
       @if (!chatMessages || activeTab === 'info') {
         <div class="user-card-moderation-actions">
           @if (blocked) {
-            <span class="user-card-blocked-banner">Hai bloccato questo utente</span>
-            <button class="chat-request-reject-btn" (click)="unblockUser()">Sblocca</button>
+            <span class="user-card-blocked-banner">{{ 'userCard.blockedBanner' | transloco }}</span>
+            <button class="chat-request-reject-btn" (click)="unblockUser()">{{ 'chatList.unblock' | transloco }}</button>
           } @else {
-            <button class="user-card-block-btn" (click)="openBlockConfirm()">Blocca utente</button>
+            <button class="user-card-block-btn" (click)="openBlockConfirm()">{{ 'userCard.blockUser' | transloco }}</button>
           }
           @if (reportSent) {
-            <span class="user-card-report-sent">Segnalazione inviata</span>
+            <span class="user-card-report-sent">{{ 'userCard.reportSent' | transloco }}</span>
           } @else {
-            <button class="user-card-report-btn" (click)="openReportConfirm()">Segnala utente</button>
+            <button class="user-card-report-btn" (click)="openReportConfirm()">{{ 'userCard.reportUser' | transloco }}</button>
           }
         </div>
       }
@@ -119,10 +119,10 @@
   @if (confirmBlock) {
     <div class="user-card-confirm-overlay" (click)="cancelBlock(); $event.stopPropagation()">
       <div class="user-card-confirm-box" (click)="$event.stopPropagation()">
-        <p>Vuoi bloccare {{ displayName() }}? Non potrete più scrivervi.</p>
+        <p>{{ 'userCard.confirmBlock' | transloco: { name: displayName() } }}</p>
         <div class="user-card-confirm-buttons">
-          <button class="confirm-btn confirm-btn-yes" (click)="blockUser()">Sì, blocca</button>
-          <button class="confirm-btn confirm-btn-no" (click)="cancelBlock()">Annulla</button>
+          <button class="confirm-btn confirm-btn-yes" (click)="blockUser()">{{ 'userCard.yesBlock' | transloco }}</button>
+          <button class="confirm-btn confirm-btn-no" (click)="cancelBlock()">{{ 'common.cancel' | transloco }}</button>
         </div>
       </div>
     </div>
@@ -131,22 +131,22 @@
   @if (confirmReport) {
     <div class="user-card-confirm-overlay" (click)="cancelReport(); $event.stopPropagation()">
       <div class="user-card-confirm-box" (click)="$event.stopPropagation()">
-        <p>Segnala {{ displayName() }}</p>
+        <p>{{ 'userCard.report' | transloco: { name: displayName() } }}</p>
         <select class="user-card-report-reason" [(ngModel)]="reportReason">
-          <option value="SPAM">Spam</option>
-          <option value="HARASSMENT">Molestie</option>
-          <option value="INAPPROPRIATE_CONTENT">Contenuto inappropriato</option>
-          <option value="FAKE_PROFILE">Profilo falso</option>
-          <option value="OTHER">Altro</option>
+          <option value="SPAM">{{ 'userCard.reasons.spam' | transloco }}</option>
+          <option value="HARASSMENT">{{ 'userCard.reasons.harassment' | transloco }}</option>
+          <option value="INAPPROPRIATE_CONTENT">{{ 'userCard.reasons.inappropriate' | transloco }}</option>
+          <option value="FAKE_PROFILE">{{ 'userCard.reasons.fakeProfile' | transloco }}</option>
+          <option value="OTHER">{{ 'userCard.reasons.other' | transloco }}</option>
         </select>
         <textarea
           class="user-card-report-details"
-          placeholder="Dettagli aggiuntivi (opzionale)"
+          [placeholder]="'userCard.detailsPlaceholder' | transloco"
           [(ngModel)]="reportDetails"
         ></textarea>
         <div class="user-card-confirm-buttons">
-          <button class="confirm-btn confirm-btn-yes" (click)="submitReport()">Invia segnalazione</button>
-          <button class="confirm-btn confirm-btn-no" (click)="cancelReport()">Annulla</button>
+          <button class="confirm-btn confirm-btn-yes" (click)="submitReport()">{{ 'userCard.submitReport' | transloco }}</button>
+          <button class="confirm-btn confirm-btn-no" (click)="cancelReport()">{{ 'common.cancel' | transloco }}</button>
         </div>
       </div>
     </div>

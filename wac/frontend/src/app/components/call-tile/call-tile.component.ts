@@ -1,6 +1,8 @@
 import { AfterViewChecked, Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 import { ErrorLogService } from '../../utils/error-log/error-log.service';
 
+import { LanguageService } from '../../utils/i18n/language.service';
+
 @Component({
   selector: 'app-call-tile',
   templateUrl: './call-tile.component.html',
@@ -8,6 +10,7 @@ import { ErrorLogService } from '../../utils/error-log/error-log.service';
   imports: []
 })
 export class CallTileComponent implements AfterViewChecked {
+  protected readonly i18n = inject(LanguageService);
   @Input() name: string | null = null;
   @Input() avatarUrl: string | null = null;
   @Input() callType: 'AUDIO' | 'VIDEO' = 'AUDIO';
@@ -49,7 +52,7 @@ export class CallTileComponent implements AfterViewChecked {
     element.play().catch(err => {
       this.errorLogService.report({
         source: 'client',
-        message: `Riproduzione ${this.callType === 'VIDEO' ? 'video' : 'audio'} chiamata bloccata dal browser: ${err?.message ?? err}`
+        message: this.i18n.translate(this.callType === 'VIDEO' ? 'errors.videoPlaybackBlocked' : 'errors.audioPlaybackBlocked', { error: err?.message ?? String(err) })
       });
     });
   }

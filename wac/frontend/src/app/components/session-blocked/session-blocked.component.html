@@ -3,21 +3,20 @@
     <div class="session-blocked-icon">
       <i class="fa-solid fa-user-lock"></i>
     </div>
-    <h2 class="session-blocked-title">Sessione già attiva</h2>
+    <h2 class="session-blocked-title">{{ 'sessionBlocked.title' | transloco }}</h2>
     <p class="session-blocked-sub">
-      Hai già una sessione aperta su un altro dispositivo o un'altra scheda.
-      Chiudi quella sessione per continuare qui, oppure riprova se l'hai già fatto.
+      {{ 'sessionBlocked.text' | transloco }}
     </p>
 
     <button class="session-blocked-retry-btn" [disabled]="retrying" (click)="retry()">
       @if (retrying) {
-        <i class="fa-solid fa-spinner fa-spin"></i> Verifica…
+        <i class="fa-solid fa-spinner fa-spin"></i> {{ 'sessionBlocked.checking' | transloco }}
       } @else {
-        Riprova
+        {{ 'sessionBlocked.retry' | transloco }}
       }
     </button>
     <button class="session-blocked-logout-btn" (click)="logout()">
-      Esci
+      {{ 'common.logout' | transloco }}
     </button>
   </div>
 </div>

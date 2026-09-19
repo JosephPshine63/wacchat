@@ -1,12 +1,12 @@
 <div class="settings-overlay" (click)="close()">
   <div class="settings-box" (click)="$event.stopPropagation()">
-    <button class="settings-close" (click)="close()" aria-label="Chiudi">
+    <button class="settings-close" (click)="close()" [attr.aria-label]="'common.close' | transloco">
       <i class="fas fa-xmark"></i>
     </button>
 
-    <h2 class="settings-title">Impostazioni</h2>
+    <h2 class="settings-title">{{ 'settings.title' | transloco }}</h2>
 
-    <label class="settings-label" for="theme-select">Tema</label>
+    <label class="settings-label" for="theme-select">{{ 'settings.theme' | transloco }}</label>
     <select
       id="theme-select"
       class="settings-select"
@@ -14,11 +14,23 @@
       (ngModelChange)="themeService.setTheme($event)"
     >
       @for (theme of themes; track theme.id) {
-        <option [value]="theme.id">{{ theme.label }}</option>
+        <option [value]="theme.id">{{ theme.labelKey | transloco }}</option>
       }
     </select>
 
-    <label class="settings-label">Sfondo chat</label>
+    <label class="settings-label" for="lang-select">{{ 'settings.language' | transloco }}</label>
+    <select
+      id="lang-select"
+      class="settings-select"
+      [ngModel]="language.lang()"
+      (ngModelChange)="onLanguageChange($event)"
+    >
+      @for (lang of languages; track lang.id) {
+        <option [value]="lang.id">{{ lang.label }}</option>
+      }
+    </select>
+
+    <label class="settings-label">{{ 'settings.chatBackground' | transloco }}</label>
     <div class="settings-bg-swatches">
       @for (bg of chatBackgrounds; track bg.id) {
         <button
@@ -27,7 +39,7 @@
           [class.active]="chatBackgroundService.background() === bg.id"
           [class.swatch-none]="bg.id === 'none'"
           [style.backgroundImage]="bg.id !== 'none' ? 'url(/chat-backgrounds/' + bg.id + '-preview.png)' : null"
-          [title]="bg.label"
+          [title]="bg.labelKey | transloco"
           (click)="chatBackgroundService.setBackground(bg.id)"
         >
           @if (bg.id === 'none') {
@@ -38,7 +50,7 @@
     </div>
 
     <button class="settings-report-bug" type="button" (click)="onReportBug()">
-      <i class="fas fa-bug"></i> Segnala un bug
+      <i class="fas fa-bug"></i> {{ 'settings.reportBug' | transloco }}
     </button>
   </div>
 </div>

@@ -4,7 +4,7 @@
       <i class="fa-solid fa-reply reply-preview-icon"></i>
       <span class="reply-preview-text">{{ previewText() }}</span>
     </div>
-    <button class="reply-preview-cancel" (click)="cancel()" title="Annulla risposta">
+    <button class="reply-preview-cancel" (click)="cancel()" [title]="'replyPreview.cancel' | transloco">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>

@@ -1,13 +1,13 @@
 <div class="call-invitee-picker-overlay" (click)="close()">
   <div class="call-invitee-picker-box" (click)="$event.stopPropagation()">
-    <button class="call-invitee-picker-close" (click)="close()" aria-label="Chiudi">✕</button>
+    <button class="call-invitee-picker-close" (click)="close()" [attr.aria-label]="'common.close' | transloco">✕</button>
     <h3 class="call-invitee-picker-title">
-      Chi vuoi invitare alla chiamata {{ callType === 'VIDEO' ? 'video' : 'vocale' }}?
+      {{ (callType === 'VIDEO' ? 'callInvitee.titleVideo' : 'callInvitee.titleVoice') | transloco }}
     </h3>
-    <p class="call-invitee-picker-hint">Fino a {{ maxInvitees }} partecipanti.</p>
+    <p class="call-invitee-picker-hint">{{ 'callInvitee.hint' | transloco: { count: maxInvitees } }}</p>
 
     @if (loading) {
-      <p class="call-invitee-picker-loading">Caricamento…</p>
+      <p class="call-invitee-picker-loading">{{ 'common.loading' | transloco }}</p>
     } @else {
       <div class="call-invitee-picker-list">
         @for (member of members; track member.userId) {
@@ -25,13 +25,13 @@
             }
           </div>
         } @empty {
-          <p class="call-invitee-picker-empty">Nessun altro membro nel gruppo.</p>
+          <p class="call-invitee-picker-empty">{{ 'callInvitee.empty' | transloco }}</p>
         }
       </div>
     }
 
     <button class="call-invitee-picker-submit" [disabled]="!canConfirm()" (click)="confirm()">
-      Chiama ({{ selectedIds.size }})
+      {{ 'callInvitee.submit' | transloco: { count: selectedIds.size } }}
     </button>
   </div>
 </div>

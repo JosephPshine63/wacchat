@@ -4,12 +4,13 @@ import { UserService } from '../../services/services/user.service';
 import { GroupMemberResponse } from '../../services/models/group-member-response';
 import { UserResponse } from '../../services/models/user-response';
 import { KeycloakService } from '../../utils/keycloak/keycloak.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-group-members',
   templateUrl: './group-members.component.html',
   styleUrl: './group-members.component.scss',
-  imports: []
+  imports: [TranslocoPipe]
 })
 export class GroupMembersComponent implements OnChanges {
   @Input({ required: true }) chatId!: string;

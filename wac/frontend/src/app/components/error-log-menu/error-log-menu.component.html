@@ -1,5 +1,5 @@
 <div class="error-log-menu">
-  <button class="nav-icon-btn" [class.has-errors]="errorLog.errors().length > 0" (click)="toggle($event)" title="Log errori">
+  <button class="nav-icon-btn" [class.has-errors]="errorLog.errors().length > 0" (click)="toggle($event)" [title]="'errorLog.title' | transloco">
     <i class="fa-solid fa-triangle-exclamation"></i>
     @if (errorLog.unseenCount() > 0) {
       <span class="error-badge">{{ errorLog.unseenCount() > 9 ? '9+' : errorLog.unseenCount() }}</span>
@@ -8,20 +8,20 @@
   @if (open) {
     <div class="error-log-dropdown" (click)="$event.stopPropagation()">
       <div class="error-log-header">
-        <span>Log errori</span>
+        <span>{{ 'errorLog.title' | transloco }}</span>
         @if (errorLog.errors().length > 0) {
-          <button type="button" class="clear-btn" (click)="clear($event)">Svuota</button>
+          <button type="button" class="clear-btn" (click)="clear($event)">{{ 'errorLog.clear' | transloco }}</button>
         }
       </div>
       @if (errorLog.errors().length === 0) {
-        <div class="error-log-empty">Nessun errore registrato.</div>
+        <div class="error-log-empty">{{ 'errorLog.empty' | transloco }}</div>
       } @else {
         <div class="error-log-list">
           @for (entry of errorLog.errors(); track entry.id) {
             <div class="error-log-entry">
               <div class="error-log-entry-top">
                 <span class="error-source">{{ sourceLabel(entry) }}</span>
-                <span class="error-time">{{ entry.timestamp | date: 'HH:mm:ss' }}</span>
+                <span class="error-time">{{ entry.timestamp | localDate:'timeSeconds' }}</span>
               </div>
               <div class="error-message">{{ entry.message }}</div>
               @if (entry.url) {

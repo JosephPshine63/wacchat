@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-
+import { TranslocoPipe } from '@jsverse/transloco';
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 4;
 const ZOOM_STEP = 0.25;
@@ -7,6 +7,7 @@ const ZOOM_STEP = 0.25;
 @Component({
   selector: 'app-media-lightbox',
   templateUrl: './media-lightbox.component.html',
+  imports: [TranslocoPipe],
   styleUrl: './media-lightbox.component.scss'
 })
 export class MediaLightboxComponent {

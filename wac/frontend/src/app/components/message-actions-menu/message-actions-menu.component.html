@@ -1,36 +1,36 @@
 <div class="message-actions-menu">
-  <button #toggleBtn class="message-actions-btn" [class.menu-open]="open" (click)="onToggleClick($event)" title="Azioni">
+  <button #toggleBtn class="message-actions-btn" [class.menu-open]="open" (click)="onToggleClick($event)" [title]="'messageActions.title' | transloco">
     <i class="fa-solid fa-ellipsis-vertical"></i>
   </button>
   @if (open) {
     <div class="message-actions-dropdown" [class.opens-up]="opensUpward" [class.opens-right]="opensRight" (click)="$event.stopPropagation()">
       <button type="button" (click)="onReact($event)">
-        <i class="fa-regular fa-face-smile"></i> Reagisci
+        <i class="fa-regular fa-face-smile"></i> {{ 'messageActions.react' | transloco }}
       </button>
       <button type="button" (click)="onStar($event)">
-        <i class="fa-{{ starred ? 'solid' : 'regular' }} fa-star"></i> {{ starred ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti' }}
+        <i class="fa-{{ starred ? 'solid' : 'regular' }} fa-star"></i> {{ (starred ? 'messageActions.unstar' : 'messageActions.star') | transloco }}
       </button>
       <button type="button" (click)="onReply($event)">
-        <i class="fa-solid fa-reply"></i> Rispondi
+        <i class="fa-solid fa-reply"></i> {{ 'messageActions.reply' | transloco }}
       </button>
       @if (canEdit) {
         <button type="button" (click)="onEdit($event)">
-          <i class="fa-solid fa-pen"></i> Modifica
+          <i class="fa-solid fa-pen"></i> {{ 'messageActions.edit' | transloco }}
         </button>
       }
       @if (canDelete) {
         <button type="button" class="danger" (click)="onDelete($event)">
-          <i class="fa-solid fa-trash"></i> Elimina
+          <i class="fa-solid fa-trash"></i> {{ 'messageActions.delete' | transloco }}
         </button>
       }
       @if (canForward) {
         <button type="button" (click)="onForward($event)">
-          <i class="fa-solid fa-share"></i> Inoltra
+          <i class="fa-solid fa-share"></i> {{ 'messageActions.forward' | transloco }}
         </button>
       }
       @if (canCopy) {
         <button type="button" (click)="onCopy($event)">
-          <i class="fa-solid fa-copy"></i> Copia
+          <i class="fa-solid fa-copy"></i> {{ 'messageActions.copy' | transloco }}
         </button>
       }
     </div>

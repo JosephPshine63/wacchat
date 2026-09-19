@@ -1,8 +1,10 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-audio-player',
   templateUrl: './audio-player.component.html',
+  imports: [TranslocoPipe],
   styleUrl: './audio-player.component.scss'
 })
 export class AudioPlayerComponent {

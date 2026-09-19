@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WebRtcCallService } from '../../utils/webrtc/webrtc-call.service';
 import { CallTileComponent } from '../call-tile/call-tile.component';
-
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LanguageService } from '../../utils/i18n/language.service';
 export interface CallParticipantView {
   userId: string;
   name: string | null;
@@ -14,9 +15,10 @@ export interface CallParticipantView {
   selector: 'app-call',
   templateUrl: './call.component.html',
   styleUrl: './call.component.scss',
-  imports: [CallTileComponent]
+  imports: [TranslocoPipe, CallTileComponent]
 })
 export class CallComponent implements OnChanges, OnDestroy {
+  protected readonly i18n = inject(LanguageService);
 
   // Includes 'idle' purely so the type matches MainComponent's broader field as-is —
   // the parent only renders <app-call> at all once callState !== 'idle' (see
@@ -69,7 +71,7 @@ export class CallComponent implements OnChanges, OnDestroy {
 
   statusLabelFor(participant: CallParticipantView): string | null {
     if (this.callState === 'outgoing' && participant.status === 'ringing') {
-      return 'Squilla…';
+      return this.i18n.translate('call.ringing');
     }
     return null;
   }

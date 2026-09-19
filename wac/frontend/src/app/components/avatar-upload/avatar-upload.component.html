@@ -1,10 +1,10 @@
 <div class="avatar-upload-overlay" (click)="close()">
   <div class="avatar-upload-box" (click)="$event.stopPropagation()">
-    <button class="avatar-upload-close" (click)="close()" aria-label="Chiudi">
+    <button class="avatar-upload-close" (click)="close()" [attr.aria-label]="'common.close' | transloco">
       <i class="fas fa-xmark"></i>
     </button>
 
-    <h2 class="avatar-upload-title">Foto profilo</h2>
+    <h2 class="avatar-upload-title">{{ 'avatarUpload.title' | transloco }}</h2>
 
     <div class="avatar-upload-preview">
       @if (mode === 'preview' && previewUrl) {
@@ -28,18 +28,18 @@
     <div class="avatar-upload-actions">
       @if (mode === 'preview') {
         <button class="avatar-upload-btn primary" (click)="confirmUpload()" [disabled]="uploading">
-          Usa questa foto
+          {{ 'avatarUpload.use' | transloco }}
         </button>
         <button class="avatar-upload-btn danger" (click)="cancelPreview()" [disabled]="uploading">
-          Annulla
+          {{ 'common.cancel' | transloco }}
         </button>
       } @else {
         <button class="avatar-upload-btn primary" (click)="fileInput.click()" [disabled]="uploading">
-          Carica foto
+          {{ 'avatarUpload.upload' | transloco }}
         </button>
         @if (currentAvatarUrl) {
           <button class="avatar-upload-btn danger" (click)="removeAvatar()" [disabled]="uploading">
-            Rimuovi foto
+            {{ 'avatarUpload.remove' | transloco }}
           </button>
         }
       }

@@ -63,6 +63,10 @@ jobs:
         working-directory: wac/frontend
         run: npm ci
 
+      - name: Check i18n dictionaries (key parity, placeholders, keys used in code)
+        working-directory: wac/frontend
+        run: npm run i18n:check
+
       - name: Run unit tests (headless Chrome)
         working-directory: wac/frontend
         run: npx ng test --no-watch --no-progress --browsers=ChromeHeadless

@@ -1,17 +1,20 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/services/user.service';
 import { UserResponse } from '../../services/models/user-response';
 import { GroupChatService } from '../../services/services/group-chat.service';
 import { ChatResponse } from '../../services/models/chat-response';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LanguageService } from '../../utils/i18n/language.service';
 
 @Component({
   selector: 'app-group-create',
   templateUrl: './group-create.component.html',
   styleUrl: './group-create.component.scss',
-  imports: [FormsModule]
+  imports: [TranslocoPipe, FormsModule]
 })
 export class GroupCreateComponent implements OnInit {
+  protected readonly i18n = inject(LanguageService);
   @Output() closed = new EventEmitter<void>();
   @Output() groupCreated = new EventEmitter<ChatResponse>();
 
@@ -65,7 +68,7 @@ export class GroupCreateComponent implements OnInit {
       },
       error: () => {
         this.creating = false;
-        this.error = 'Impossibile creare il gruppo. Riprova.';
+        this.error = this.i18n.translate('groupCreate.errors.create');
       }
     });
   }

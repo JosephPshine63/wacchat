@@ -1,10 +1,10 @@
 <div class="forward-picker-overlay" (click)="close()">
   <div class="forward-picker-box" (click)="$event.stopPropagation()">
-    <button class="forward-picker-close" (click)="close()" aria-label="Chiudi">
+    <button class="forward-picker-close" (click)="close()" [attr.aria-label]="'common.close' | transloco">
       <i class="fas fa-xmark"></i>
     </button>
 
-    <h2 class="forward-picker-title">Inoltra a…</h2>
+    <h2 class="forward-picker-title">{{ 'forwardPicker.title' | transloco }}</h2>
 
     <div class="forward-picker-list">
       @for (chat of chats; track chat) {
@@ -19,7 +19,7 @@
           <span class="forward-picker-name">{{ chat.name }}</span>
         </div>
       } @empty {
-        <p class="forward-picker-empty">Nessuna chat disponibile.</p>
+        <p class="forward-picker-empty">{{ 'forwardPicker.empty' | transloco }}</p>
       }
     </div>
   </div>

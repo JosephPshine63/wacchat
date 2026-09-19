@@ -5,7 +5,6 @@ import {SupportService} from '../../services/services/support.service';
 import {ChatListComponent} from '../../components/chat-list/chat-list.component';
 import {KeycloakService} from '../../utils/keycloak/keycloak.service';
 import {ChatResponse} from '../../services/models/chat-response';
-import {DatePipe} from '@angular/common';
 import {MessageService} from '../../services/services/message.service';
 import {MessageResponse} from '../../services/models/message-response';
 import {UserResponse} from '../../services/models/user-response';
@@ -43,7 +42,9 @@ import {AudioPlayerComponent} from '../../components/audio-player/audio-player.c
 import {GroupCreateComponent} from '../../components/group-create/group-create.component';
 import {GroupMembersComponent} from '../../components/group-members/group-members.component';
 import {PushSubscriptionService} from '../../utils/push/push-subscription.service';
-
+import { TranslocoPipe } from '@jsverse/transloco';
+import { LocalDatePipe } from '../../utils/i18n/local-date.pipe';
+import { LanguageService } from '../../utils/i18n/language.service';
 const HEARTBEAT_INTERVAL_MS = 60000;
 const ARNO_USER_ID = '00000000-0000-0000-0000-000000000001';
 const ARNO_TYPING_TIMEOUT_MS = 20000;
@@ -56,9 +57,8 @@ const MAX_PENDING_MESSAGES = 3;
 
 @Component({
   selector: 'app-main',
-  imports: [
+  imports: [TranslocoPipe, LocalDatePipe, 
     ChatListComponent,
-    DatePipe,
     FormsModule,
     PickerComponent,
     UsernameSetupComponent,
@@ -167,6 +167,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     private supportService: SupportService,
     private errorLogService: ErrorLogService,
     private pushSubscriptionService: PushSubscriptionService,
+    private i18n: LanguageService,
   ) {
   }
 
@@ -383,14 +384,14 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
       },
       error: () => {
         this.showSettings = false;
-        alert('La segnalazione bug non è al momento disponibile su questo ambiente.');
+        alert(this.i18n.translate('main.bug.unavailable'));
       }
     });
   }
 
   private openReportBugChat(chat: ChatResponse): void {
     this.chatSelected(chat);
-    this.messageContent = 'Segnalazione bug: ';
+    this.messageContent = this.i18n.translate('main.bug.prefix');
     this.showSettings = false;
   }
 
@@ -707,7 +708,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   confirmDelete(message: MessageResponse): void {
     if (!message.id || message.deleted) return;
-    if (!window.confirm('Eliminare questo messaggio?')) return;
+    if (!window.confirm(this.i18n.translate('main.confirmDelete'))) return;
     const messageId = message.id;
     message.deleted = true;
     message.content = undefined;
@@ -744,11 +745,19 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     return 'IMAGE';
   }
 
+  private mediaSentBody(type: 'TEXT' | 'IMAGE' | 'VIDEO' | 'AUDIO' | undefined): string {
+    switch (type) {
+      case 'VIDEO': return this.i18n.translate('notifications.sentVideo');
+      case 'AUDIO': return this.i18n.translate('notifications.sentVoice');
+      default: return this.i18n.translate('notifications.sentPhoto');
+    }
+  }
+
   private mediaLabelForType(type: 'TEXT' | 'IMAGE' | 'VIDEO' | 'AUDIO' | undefined): string {
     switch (type) {
-      case 'VIDEO': return '🎥 Video';
-      case 'AUDIO': return '🎤 Messaggio vocale';
-      default: return '📷 Foto';
+      case 'VIDEO': return this.i18n.translate('media.video');
+      case 'AUDIO': return this.i18n.translate('media.voice');
+      default: return this.i18n.translate('media.photo');
     }
   }
 
@@ -826,7 +835,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
       // ma logga il motivo, altrimenti dal telefono (senza devtools) sembra solo rotto
       this.errorLogService.report({
         source: 'client',
-        message: `Registrazione nota vocale non avviata: ${(err as Error)?.message ?? err}`
+        message: this.i18n.translate('errors.recordingNotStarted', { error: (err as Error)?.message ?? String(err) })
       });
     }
   }
@@ -1095,9 +1104,9 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     const chatIsOpenAndFocused = document.hasFocus() && this.selectedChat?.id === notification.chatId;
     if (chatIsOpenAndFocused) return;
 
-    const title = notification.chatName || 'Nuovo messaggio';
+    const title = notification.chatName || this.i18n.translate('notifications.newMessage');
     const body = this.isMediaNotificationType(notification.type)
-      ? `Ti ha inviato ${this.mediaLabelForType(notification.messageType).toLowerCase()}`
+      ? this.mediaSentBody(notification.messageType)
       : (notification.content || '');
     const chatId = notification.chatId;
     this.browserNotifications.notify(title, body, () => {
@@ -1135,8 +1144,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     };
     this.chats.unshift(newChat);
     this.browserNotifications.notify(
-      notification.chatName || 'Nuova richiesta di chat',
-      'Vuole iniziare una chat con te',
+      notification.chatName || this.i18n.translate('notifications.newRequest'),
+      this.i18n.translate('notifications.wantsToChat'),
       () => this.ngZone.run(() => {
         const chat = this.chats.find(c => c.id === notification.chatId);
         if (chat) this.chatSelected(chat);
@@ -1151,8 +1160,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
   private handleGroupAdded(notification: Notification): void {
     this.getAllChats();
     this.browserNotifications.notify(
-      notification.chatName || 'Nuovo gruppo',
-      'Sei stato aggiunto a un gruppo',
+      notification.chatName || this.i18n.translate('notifications.newGroup'),
+      this.i18n.translate('notifications.addedToGroup'),
       () => this.ngZone.run(() => {
         const chat = this.chats.find(c => c.id === notification.chatId);
         if (chat) this.chatSelected(chat);
@@ -1333,11 +1342,11 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (!dateStr) return '';
     const date = new Date(dateStr);
     const today = new Date();
-    if (this.isSameDay(date, today)) return 'Oggi';
+    if (this.isSameDay(date, today)) return this.i18n.translate('main.dates.today');
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
-    if (this.isSameDay(date, yesterday)) return 'Ieri';
-    return new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+    if (this.isSameDay(date, yesterday)) return this.i18n.translate('main.dates.yesterday');
+    return new Intl.DateTimeFormat(this.i18n.intlLocale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
   }
 
   toggleMessageSearch(): void {
@@ -1593,8 +1602,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (!document.hasFocus()) {
       const chatId = this.activeCallChatId;
       this.browserNotifications.notify(
-        name || 'Chiamata in arrivo',
-        this.activeCallType === 'VIDEO' ? 'Videochiamata in arrivo' : 'Chiamata in arrivo',
+        name || this.i18n.translate('notifications.incomingCall'),
+        this.i18n.translate(this.activeCallType === 'VIDEO' ? 'notifications.incomingVideoCall' : 'notifications.incomingCall'),
         () => this.ngZone.run(() => {
           const chat = this.chats.find(c => c.id === chatId);
           if (chat) this.chatSelected(chat);

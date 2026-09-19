@@ -1,15 +1,15 @@
 @if (mediaUrl) {
   <div class="lightbox-overlay" (click)="close()">
-    <button class="lightbox-close" (click)="close(); $event.stopPropagation()" title="Chiudi" aria-label="Chiudi">
+    <button class="lightbox-close" (click)="close(); $event.stopPropagation()" [title]="'common.close' | transloco" [attr.aria-label]="'common.close' | transloco">
       <i class="fa-solid fa-xmark"></i>
     </button>
 
     @if (mediaType === 'IMAGE') {
       <div class="lightbox-toolbar" (click)="$event.stopPropagation()">
-        <button class="lightbox-tool-btn" (click)="zoomOut()" title="Riduci">
+        <button class="lightbox-tool-btn" (click)="zoomOut()" [title]="'lightbox.zoomOut' | transloco">
           <i class="fa-solid fa-magnifying-glass-minus"></i>
         </button>
-        <button class="lightbox-tool-btn" (click)="zoomIn()" title="Ingrandisci">
+        <button class="lightbox-tool-btn" (click)="zoomIn()" [title]="'lightbox.zoomIn' | transloco">
           <i class="fa-solid fa-magnifying-glass-plus"></i>
         </button>
       </div>

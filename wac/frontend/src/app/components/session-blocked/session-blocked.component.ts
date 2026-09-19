@@ -3,12 +3,13 @@ import { UsernameService } from '../../utils/username/username.service';
 import { KeycloakService } from '../../utils/keycloak/keycloak.service';
 import { SessionGuardService } from '../../utils/session/session-guard.service';
 import { DraftService } from '../../utils/draft/draft.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-session-blocked',
   templateUrl: './session-blocked.component.html',
   styleUrl: './session-blocked.component.scss',
-  imports: []
+  imports: [TranslocoPipe]
 })
 export class SessionBlockedComponent {
 

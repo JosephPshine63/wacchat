@@ -3,14 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { UsernameService } from '../../utils/username/username.service';
-
+import { TranslocoPipe } from '@jsverse/transloco';
 type CheckState = 'idle' | 'checking' | 'available' | 'taken' | 'invalid';
 
 @Component({
   selector: 'app-username-setup',
   templateUrl: './username-setup.component.html',
   styleUrl: './username-setup.component.scss',
-  imports: [FormsModule]
+  imports: [TranslocoPipe, FormsModule]
 })
 export class UsernameSetupComponent implements OnInit, OnDestroy {
 

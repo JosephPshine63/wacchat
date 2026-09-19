@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { GroupChatService } from '../../services/services/group-chat.service';
 import { GroupMemberResponse } from '../../services/models/group-member-response';
 import { KeycloakService } from '../../utils/keycloak/keycloak.service';
-
+import { TranslocoPipe } from '@jsverse/transloco';
 // Must match application.call.max-participants (default 8, see call-service's
 // application.yml) minus the caller themself.
 const MAX_INVITEES = 7;
@@ -11,7 +11,7 @@ const MAX_INVITEES = 7;
   selector: 'app-call-invitee-picker',
   templateUrl: './call-invitee-picker.component.html',
   styleUrl: './call-invitee-picker.component.scss',
-  imports: []
+  imports: [TranslocoPipe]
 })
 export class CallInviteePickerComponent implements OnChanges {
   @Input({ required: true }) chatId!: string;

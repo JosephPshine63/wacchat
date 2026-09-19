@@ -5,7 +5,8 @@ describe('ReplyPreviewBarComponent', () => {
   let component: ReplyPreviewBarComponent;
 
   beforeEach(() => {
-    component = new ReplyPreviewBarComponent();
+    const fakeLanguageService = { translate: (key: string) => key } as any;
+    component = new ReplyPreviewBarComponent(fakeLanguageService);
   });
 
   function message(overrides: Partial<MessageResponse>): MessageResponse {
@@ -24,11 +25,11 @@ describe('ReplyPreviewBarComponent', () => {
 
   it('returns a media label for VIDEO/AUDIO/IMAGE messages', () => {
     component.message = message({ type: 'VIDEO' });
-    expect(component.previewText()).toBe('🎥 Video');
+    expect(component.previewText()).toBe('media.video');
     component.message = message({ type: 'AUDIO' });
-    expect(component.previewText()).toBe('🎤 Messaggio vocale');
+    expect(component.previewText()).toBe('media.voice');
     component.message = message({ type: 'IMAGE' });
-    expect(component.previewText()).toBe('📷 Foto');
+    expect(component.previewText()).toBe('media.photo');
   });
 
   it('emits cancelled when cancel() is called', () => {
