@@ -149,7 +149,13 @@
     "reject": "Rifiuta",
     "accept": "Accetta",
     "mute": "Muto",
-    "hangUp": "Riaggancia"
+    "hangUp": "Riaggancia",
+    "summary": {
+      "missed": "📞 Chiamata persa",
+      "ended": "📞 Chiamata terminata - durata {{duration}}",
+      "groupEnded": "📞 Chiamata di gruppo terminata",
+      "groupEndedDuration": "📞 Chiamata di gruppo terminata - durata {{duration}} ({{count}} partecipanti)"
+    }
   },
   "chatList": {
     "title": "Chat",

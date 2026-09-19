@@ -49,6 +49,7 @@ CREATE TABLE users
     username           VARCHAR(255) UNIQUE,
     last_seen          TIMESTAMP WITHOUT TIME ZONE,
     avatar_url         VARCHAR(500),
+    locale             VARCHAR(5),
     active_session_id  VARCHAR(255),
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
@@ -227,3 +228,5 @@ CREATE TABLE IF NOT EXISTS push_subscriptions
 
 ALTER TABLE push_subscriptions
     ADD CONSTRAINT FK_PUSH_SUBSCRIPTIONS_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);
+-- i18n: user UI language (it/en/fr/de/es). Existing databases: apply manually if ddl-auto is not enabled.
+ALTER TABLE users ADD COLUMN IF NOT EXISTS locale VARCHAR(5);

@@ -227,7 +227,7 @@ class CallServiceTest {
 
         assertThat(sessionStore.get(CHAT_ID)).isEmpty();
         verify(internalMessageClient).sendSystemMessage(eq(CHAT_ID), eq(CALLER_ID), eq(CALLEE_ID),
-                eq("📞 Chiamata terminata - durata 00:00"));
+                eq("i18n:call.summary.ended|00:00"));
     }
 
     @Test
@@ -237,7 +237,7 @@ class CallServiceTest {
 
         callService.end(CHAT_ID, CALLEE_ID, "REJECT");
 
-        verify(internalMessageClient).sendSystemMessage(CHAT_ID, CALLER_ID, CALLEE_ID, "📞 Chiamata persa");
+        verify(internalMessageClient).sendSystemMessage(CHAT_ID, CALLER_ID, CALLEE_ID, "i18n:call.summary.missed");
     }
 
     @Test
@@ -254,7 +254,7 @@ class CallServiceTest {
         verify(rabbitTemplate, times(3)).convertAndSend(eq("wacchat.calls"), eq("call"), captor.capture());
         assertThat(captor.getAllValues().get(1).signal().type()).isEqualTo(CallSignalType.MISSED);
         assertThat(captor.getAllValues().get(2).signal().type()).isEqualTo(CallSignalType.MISSED);
-        verify(internalMessageClient).sendSystemMessage(CHAT_ID, CALLER_ID, CALLEE_ID, "📞 Chiamata persa");
+        verify(internalMessageClient).sendSystemMessage(CHAT_ID, CALLER_ID, CALLEE_ID, "i18n:call.summary.missed");
     }
 
     @Test
@@ -419,7 +419,7 @@ class CallServiceTest {
 
         assertThat(sessionStore.get(CHAT_ID)).isEmpty();
         verify(internalMessageClient).sendGroupSystemMessage(eq(CHAT_ID), eq(CALLER_ID),
-                eq("📞 Chiamata di gruppo terminata - durata 00:00 (3 partecipanti)"));
+                eq("i18n:call.summary.groupEndedDuration|00:00|3"));
     }
 
     @Test

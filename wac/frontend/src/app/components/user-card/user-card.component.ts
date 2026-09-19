@@ -11,13 +11,14 @@ import { KeycloakService } from '../../utils/keycloak/keycloak.service';
 import { MuteService } from '../../utils/mute/mute.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LocalDatePipe } from '../../utils/i18n/local-date.pipe';
+import { MessageTextPipe } from '../../utils/i18n/message-text.pipe';
 import { LanguageService } from '../../utils/i18n/language.service';
 
 @Component({
   selector: 'app-user-card',
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.scss',
-  imports: [TranslocoPipe, LocalDatePipe, FormsModule]
+  imports: [TranslocoPipe, LocalDatePipe, MessageTextPipe, FormsModule]
 })
 export class UserCardComponent implements OnChanges {
   protected readonly i18n = inject(LanguageService);

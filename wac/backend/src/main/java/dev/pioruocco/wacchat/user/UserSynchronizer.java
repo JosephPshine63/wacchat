@@ -25,11 +25,17 @@ public class UserSynchronizer {
      */
     @Transactional
     public void synchronizeWithIdp(Jwt token, String tabId) {
-        log.info("Synchronizing user with idp");
-        getUserEmail(token).ifPresent(userEmail -> synchronizeUser(token, tabId));
+        synchronizeWithIdp(token, tabId, null);
     }
 
-    private void synchronizeUser(Jwt token, String tabId) {
+    /** {@code locale} is the UI language code the client sent (null = unknown, keep what we have). */
+    @Transactional
+    public void synchronizeWithIdp(Jwt token, String tabId, String locale) {
+        log.info("Synchronizing user with idp");
+        getUserEmail(token).ifPresent(userEmail -> synchronizeUser(token, tabId, locale));
+    }
+
+    private void synchronizeUser(Jwt token, String tabId, String locale) {
         String userId = token.getSubject();
         log.info("Synchronizing user having id {}", userId);
         // Looked up by the stable Keycloak sub (not email): an email lookup can miss on a
@@ -40,6 +46,9 @@ public class UserSynchronizer {
         boolean isNew = optUser.isEmpty();
         User user = optUser.orElseGet(User::new);
         applySessionAndClaims(user, token, tabId);
+        if (locale != null) {
+            user.setLocale(locale);
+        }
 
         userRepository.saveAndFlush(user);
 

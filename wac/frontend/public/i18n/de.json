@@ -107,7 +107,7 @@
     "creating": "Erstellung…",
     "submit": "Gruppe erstellen ({{ count }})",
     "errors": {
-      "create": "Die Gruppe konnte nicht erstellt werden. Versuch es noch einmal."
+      "create": "Die Gruppe konnte nicht erstellt werden. Versuch es noch mal."
     }
   },
   "groupMembers": {
@@ -125,7 +125,7 @@
     "upload": "Foto hochladen",
     "remove": "Foto entfernen",
     "errors": {
-      "format": "Format wird nicht unterstützt. Verwende JPG, PNG oder WebP.",
+      "format": "Format wird nicht unterstützt. Verwende jpg, png oder webp.",
       "size": "Das Bild ist größer als 5 MB.",
       "upload": "Das Hochladen ist fehlgeschlagen. Versuch es noch einmal.",
       "remove": "Das Löschen ist fehlgeschlagen. Versuch es noch einmal."
@@ -143,13 +143,19 @@
   },
   "call": {
     "incomingVideo": "Ein Videoanruf kommt gerade rein…",
-    "incomingVoice": "Eingehender Anruf…",
+    "incomingVoice": "Ein Anruf kommt gerade rein…",
     "calling": "Anruf läuft…",
     "ringing": "Es klingelt…",
     "reject": "Ablehnen",
     "accept": "Akzeptieren",
     "mute": "Stumm",
-    "hangUp": "Leg auf"
+    "hangUp": "Leg auf",
+    "summary": {
+      "missed": "📞 Verpasster Anruf",
+      "ended": "📞 Anruf beendet – Dauer {{duration}}",
+      "groupEnded": "📞 Gruppenanruf beendet",
+      "groupEndedDuration": "📞 Gruppenanruf beendet – Dauer {{duration}} ({{count}} Teilnehmer)"
+    }
   },
   "chatList": {
     "title": "Chat",
@@ -164,7 +170,7 @@
       "blocked": "Gesperrt",
       "archived": "Abgelegt"
     },
-    "unblock": "Entsperren",
+    "unblock": "Freischalten",
     "noBlocked": "Es wurden keine Benutzer gesperrt.",
     "incomingRequests": "Eingehende Anfragen ({{ count }})",
     "favorite": "Favorit",
@@ -195,7 +201,7 @@
     "reportSent": "Meldung gesendet",
     "reportUser": "Benutzer melden",
     "confirmBlock": "Willst du {{ name }} blockieren? Dann könnt ihr euch nicht mehr schreiben.",
-    "yesBlock": "Ja, blockiert",
+    "yesBlock": "Ja, blockieren",
     "report": "{{ name }} melden",
     "reasons": {
       "spam": "Spam",
@@ -210,7 +216,7 @@
   "main": {
     "ageDenied": {
       "title": "Zugriff nicht erlaubt",
-      "text": "Tut uns leid, diese App ist nur für volljährige Nutzer (18+) zugänglich."
+      "text": "Tut uns leid, diese App ist nur für volljährige Nutzer (18+) gedacht."
     },
     "ageGate": {
       "title": "Altersüberprüfung",
@@ -249,7 +255,7 @@
     "jumpToLatest": "Neue Nachrichten",
     "request": {
       "rejected": "Chat-Anfrage abgelehnt.",
-      "wantsToChat": "{{ name }} Er möchte mit dir chatten."
+      "wantsToChat": "{{ name }} Er/sie möchte mit dir chatten."
     },
     "recording": {
       "stop": "Halt",

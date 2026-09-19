@@ -6,6 +6,8 @@ import dev.pioruocco.wacchat.message.Message;
 import dev.pioruocco.wacchat.message.MessageRepository;
 import dev.pioruocco.wacchat.message.MessageType;
 import dev.pioruocco.wacchat.message.SystemMessageSender;
+import dev.pioruocco.wacchat.common.i18n.Messages;
+import dev.pioruocco.wacchat.user.UserLocales;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,20 +15,21 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class BotService {
 
-    private static final String FALLBACK_REPLY =
-            "Scusa, in questo momento ho qualche difficoltà a rispondere. Riprova tra poco!";
     private static final int HISTORY_SIZE = 20;
 
     private final GeminiClient geminiClient;
     private final MessageRepository messageRepository;
     private final SystemMessageSender systemMessageSender;
     private final ChatService chatService;
+    private final Messages messages;
+    private final UserLocales userLocales;
 
     @Value("${application.bot.gemini.api-key:}")
     private String geminiApiKey;
@@ -44,7 +47,7 @@ public class BotService {
         String chatId = chatService.createSystemChat(realUserId, BotConstants.ARNO_USER_ID);
         systemMessageSender.saveSystemMessage(
                 chatId, BotConstants.ARNO_USER_ID, realUserId,
-                BotConstants.WELCOME_MESSAGE, MessageType.TEXT);
+                messages.get("bot.welcome", userLocales.of(realUserId)), MessageType.TEXT);
     }
 
     /** Called after a real user sends a text message into the Arno chat. Runs off the request
@@ -56,8 +59,9 @@ public class BotService {
         }
         try {
             List<GeminiContent> conversation = buildConversation(chatId);
-            String reply = geminiClient.generateReply(conversation);
-            String content = (reply != null && !reply.isBlank()) ? reply : FALLBACK_REPLY;
+            Locale locale = userLocales.of(realUserId);
+            String reply = geminiClient.generateReply(conversation, locale);
+            String content = (reply != null && !reply.isBlank()) ? reply : messages.get("bot.fallback", locale);
             systemMessageSender.saveSystemMessage(
                     chatId, BotConstants.ARNO_USER_ID, realUserId, content, MessageType.TEXT);
         } catch (Exception e) {

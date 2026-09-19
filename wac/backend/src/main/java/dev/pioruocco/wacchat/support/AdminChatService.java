@@ -3,6 +3,8 @@ package dev.pioruocco.wacchat.support;
 import dev.pioruocco.wacchat.chat.ChatService;
 import dev.pioruocco.wacchat.message.MessageType;
 import dev.pioruocco.wacchat.message.SystemMessageSender;
+import dev.pioruocco.wacchat.common.i18n.Messages;
+import dev.pioruocco.wacchat.user.UserLocales;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,12 +20,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdminChatService {
 
-    private static final String WELCOME_MESSAGE =
-            "Ciao! Questa è la chat diretta con l'amministratore di WacChat. "
-                    + "Scrivimi pure se trovi un bug, hai un problema o vuoi segnalarmi qualcosa 🙂";
-
     private final ChatService chatService;
     private final SystemMessageSender systemMessageSender;
+    private final Messages messages;
+    private final UserLocales userLocales;
 
     @Value("${application.admin.user-id:}")
     private String adminUserId;
@@ -41,7 +41,7 @@ public class AdminChatService {
         }
         String chatId = chatService.createSystemChat(realUserId, adminUserId);
         systemMessageSender.saveSystemMessage(
-                chatId, adminUserId, realUserId, WELCOME_MESSAGE, MessageType.TEXT);
+                chatId, adminUserId, realUserId, messages.get("admin.welcome", userLocales.of(realUserId)), MessageType.TEXT);
     }
 
     /** Lazy fallback for users who completed username-setup before this feature existed
@@ -58,7 +58,7 @@ public class AdminChatService {
         String chatId = chatService.createSystemChat(realUserId, adminUserId);
         if (!alreadyExists) {
             systemMessageSender.saveSystemMessage(
-                    chatId, adminUserId, realUserId, WELCOME_MESSAGE, MessageType.TEXT);
+                    chatId, adminUserId, realUserId, messages.get("admin.welcome", userLocales.of(realUserId)), MessageType.TEXT);
         }
         return chatId;
     }

@@ -12,11 +12,12 @@ import {ChatFilter, ChatFilterService} from '../../utils/chat-filter/chat-filter
 import {MuteService} from '../../utils/mute/mute.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LocalDatePipe } from '../../utils/i18n/local-date.pipe';
+import { MessageTextPipe } from '../../utils/i18n/message-text.pipe';
 
 @Component({
   selector: 'app-chat-list',
   templateUrl: './chat-list.component.html',
-  imports: [TranslocoPipe, LocalDatePipe,
+  imports: [TranslocoPipe, LocalDatePipe, MessageTextPipe,
     FormsModule
   ],
   styleUrl: './chat-list.component.scss'

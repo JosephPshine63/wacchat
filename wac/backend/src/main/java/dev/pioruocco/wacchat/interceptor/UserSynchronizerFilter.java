@@ -6,6 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import dev.pioruocco.wacchat.common.i18n.SupportedLocales;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.lang.NonNull;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
@@ -31,8 +33,11 @@ public class UserSynchronizerFilter extends OncePerRequestFilter {
         if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
             JwtAuthenticationToken token = ((JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication());
 
+            Locale accepted = SupportedLocales.fromAcceptLanguage(request.getHeader("Accept-Language"));
+            String locale = accepted != null ? accepted.getLanguage() : null;
+
             try {
-                userSynchronizer.synchronizeWithIdp(token.getToken(), request.getHeader("X-Tab-Id"));
+                userSynchronizer.synchronizeWithIdp(token.getToken(), request.getHeader("X-Tab-Id"), locale);
             } catch (SessionConflictException e) {
                 response.setStatus(HttpServletResponse.SC_CONFLICT);
                 response.setContentType("application/json");
@@ -42,7 +47,7 @@ public class UserSynchronizerFilter extends OncePerRequestFilter {
                 // Lost a race with a concurrent request creating the same user (first login can
                 // fire more than one request before the row exists). The failed attempt aborted
                 // its own transaction; retry in a brand new one, where the row now exists.
-                userSynchronizer.synchronizeWithIdp(token.getToken(), request.getHeader("X-Tab-Id"));
+                userSynchronizer.synchronizeWithIdp(token.getToken(), request.getHeader("X-Tab-Id"), locale);
             }
         }
 

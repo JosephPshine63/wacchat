@@ -28,22 +28,26 @@ public class PushNotificationClient {
         this.responseTimeoutMs = responseTimeoutMs;
     }
 
-    @CircuitBreaker(name = "pushNotification", fallbackMethod = "sendFallback")
+    /** Asks backend to build the text itself, in the recipient's stored language
+     *  (template "call.invite") — this service has no user DB to look the locale up in.
+     *  Resilience4j sits directly on this method: it's called from another bean, so the proxy applies. */
+    @CircuitBreaker(name = "pushNotification", fallbackMethod = "sendCallInviteFallback")
     @Retry(name = "pushNotification")
-    public void send(String userId, String title, String body, String chatId) {
+    public void sendCallInvite(String userId, String callerName, String chatId) {
         webClient.post()
                 .uri("/api/v1/internal/push/send")
-                .bodyValue(new SendPushRequest(userId, title, body, chatId))
+                .bodyValue(new SendPushRequest(userId, null, null, chatId, "call.invite", callerName))
                 .retrieve()
                 .toBodilessEntity()
                 .block(Duration.ofMillis(responseTimeoutMs));
     }
 
     @SuppressWarnings("unused")
-    private void sendFallback(String userId, String title, String body, String chatId, Throwable t) {
+    private void sendCallInviteFallback(String userId, String callerName, String chatId, Throwable t) {
         log.warn("Push notification call to backend failed, failing open for user {}", userId, t);
     }
 
-    private record SendPushRequest(String userId, String title, String body, String chatId) {
+    record SendPushRequest(String userId, String title, String body, String chatId,
+                           String template, String callerName) {
     }
 }

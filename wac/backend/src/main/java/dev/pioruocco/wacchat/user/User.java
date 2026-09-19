@@ -63,6 +63,10 @@ public class User extends BaseAuditingEntity implements Persistable<String> {
     private LocalDateTime lastSeen;
     @Column(length = 500)
     private String avatarUrl;
+    // UI language (it/en/fr/de/es) kept in sync from the Accept-Language header the frontend
+    // sends; lets async/out-of-request code (push, Arno, welcome mail) speak the user's language.
+    @Column(length = 5)
+    private String locale;
     // Up to `application.session.max-active-sessions` concurrent tabs/devices are
     // tolerated (see SessionGuard) — each entry is one tab's tabId + its own last-seen
     // timestamp, independent of the user-level `lastSeen` above (which tracks any request,

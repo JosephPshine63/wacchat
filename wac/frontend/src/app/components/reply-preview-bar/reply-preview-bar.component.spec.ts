@@ -5,7 +5,7 @@ describe('ReplyPreviewBarComponent', () => {
   let component: ReplyPreviewBarComponent;
 
   beforeEach(() => {
-    const fakeLanguageService = { translate: (key: string) => key } as any;
+    const fakeLanguageService = { translate: (key: string) => key, renderContent: (c?: string | null) => c ?? '' } as any;
     component = new ReplyPreviewBarComponent(fakeLanguageService);
   });
 

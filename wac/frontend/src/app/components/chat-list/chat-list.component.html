@@ -112,7 +112,7 @@
           </div>
           <div class="item-bottom">
             <span class="item-preview">
-              {{ wrapMessage(chat.lastMessage) }}
+              {{ wrapMessage(chat.lastMessage | messageText) }}
             </span>
             @if (chat.unreadCount && chat.unreadCount > 0) {
               <span class="unread-badge">{{ chat.unreadCount }}</span>

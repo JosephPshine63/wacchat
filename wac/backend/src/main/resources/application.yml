@@ -21,6 +21,12 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: false
+  messages:
+    basename: messages
+    encoding: UTF-8
+    # Italian is the base bundle (messages.properties); without this, a host whose system
+    # locale is e.g. English would pick messages_en for requests that name no locale.
+    fallback-to-system-locale: false
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}

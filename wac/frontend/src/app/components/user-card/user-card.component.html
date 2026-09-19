@@ -85,7 +85,7 @@
             @for (m of starredMessages(); track m.id) {
               <div class="starred-item">
                 @if (m.type === 'TEXT') {
-                  <span>{{ m.content }}</span>
+                  <span>{{ m.content | messageText }}</span>
                 } @else {
                   <span><i class="fa-solid fa-paperclip"></i> {{ m.type }}</span>
                 }

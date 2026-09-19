@@ -22,7 +22,7 @@ export class ReplyPreviewBarComponent {
       case 'VIDEO': return this.i18n.translate('media.video');
       case 'AUDIO': return this.i18n.translate('media.voice');
       case 'IMAGE': return this.i18n.translate('media.photo');
-      default: return this.message.content ?? '';
+      default: return this.i18n.renderContent(this.message.content);
     }
   }
 

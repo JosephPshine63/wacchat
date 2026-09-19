@@ -13,6 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -44,7 +45,7 @@ class GeminiClientTest {
                 .addHeader("Content-Type", "application/json")
                 .setBody("{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"text\":\"Ciao!\"}]}}]}"));
 
-        String reply = client.generateReply(List.of(GeminiContent.of("user", "ciao")));
+        String reply = client.generateReply(List.of(GeminiContent.of("user", "ciao")), Locale.ITALIAN);
 
         assertThat(reply).isEqualTo("Ciao!");
         RecordedRequest recorded = server.takeRequest();
@@ -58,7 +59,7 @@ class GeminiClientTest {
                 .addHeader("Content-Type", "application/json")
                 .setBody("{\"candidates\":[]}"));
 
-        String reply = client.generateReply(List.of(GeminiContent.of("user", "ciao")));
+        String reply = client.generateReply(List.of(GeminiContent.of("user", "ciao")), Locale.ITALIAN);
 
         assertThat(reply).isNull();
     }
@@ -70,7 +71,7 @@ class GeminiClientTest {
         // No Resilience4j aspect is active in this plain unit test (that requires a Spring
         // context), so a 5xx propagates as the raw WebClient exception here — the fallback
         // below is what turns this into a null reply when wired through Spring.
-        assertThatThrownBy(() -> client.generateReply(List.of(GeminiContent.of("user", "ciao"))))
+        assertThatThrownBy(() -> client.generateReply(List.of(GeminiContent.of("user", "ciao")), Locale.ITALIAN))
                 .isNotNull();
     }
 
@@ -81,7 +82,7 @@ class GeminiClientTest {
                 .addHeader("Content-Type", "application/json")
                 .setBody("{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"text\":\"Ciao!\"}]}}]}"));
 
-        client.generateReply(List.of(GeminiContent.of("user", "ciao")));
+        client.generateReply(List.of(GeminiContent.of("user", "ciao")), Locale.ITALIAN);
 
         RecordedRequest recorded = server.takeRequest();
         JsonNode root = new ObjectMapper().readTree(recorded.getBody().readUtf8());
@@ -92,7 +93,8 @@ class GeminiClientTest {
         String instructionText = systemInstruction.path("parts").get(0).path("text").asText();
         assertThat(instructionText)
                 .contains("Arno")
-                .isEqualTo(BotConstants.SYSTEM_INSTRUCTION);
+                .startsWith(BotConstants.SYSTEM_INSTRUCTION)
+                .contains("Lingua preferita dell'utente: Italian");
 
         assertThat(root.path("contents").get(0).path("parts").get(0).path("text").asText())
                 .isEqualTo("ciao");
@@ -105,7 +107,7 @@ class GeminiClientTest {
                 .addHeader("Content-Type", "application/json")
                 .setBody("{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"text\":\"Ciao!\"}]}}]}"));
 
-        client.generateReply(List.of(GeminiContent.of("user", "ciao")));
+        client.generateReply(List.of(GeminiContent.of("user", "ciao")), Locale.ITALIAN);
 
         RecordedRequest recorded = server.takeRequest();
         JsonNode root = new ObjectMapper().readTree(recorded.getBody().readUtf8());
@@ -118,10 +120,10 @@ class GeminiClientTest {
 
     @Test
     void fallback_returnsNull() throws Exception {
-        var method = GeminiClient.class.getDeclaredMethod("generateReplyFallback", List.class, Throwable.class);
+        var method = GeminiClient.class.getDeclaredMethod("generateReplyFallback", List.class, Locale.class, Throwable.class);
         method.setAccessible(true);
 
-        Object result = method.invoke(client, List.of(), new RuntimeException("timeout"));
+        Object result = method.invoke(client, List.of(), Locale.ITALIAN, new RuntimeException("timeout"));
 
         assertThat(result).isNull();
     }

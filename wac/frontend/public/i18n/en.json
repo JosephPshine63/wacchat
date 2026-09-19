@@ -149,7 +149,13 @@
     "reject": "Decline",
     "accept": "Accept",
     "mute": "Silent",
-    "hangUp": "Hang up"
+    "hangUp": "Hang up",
+    "summary": {
+      "missed": "📞 Missed call",
+      "ended": "📞 Call ended - duration {{duration}}",
+      "groupEnded": "📞 Group call ended",
+      "groupEndedDuration": "📞 Group call ended - duration {{duration}} ({{count}} participants)"
+    }
   },
   "chatList": {
     "title": "Chat",

@@ -44,6 +44,7 @@ import {GroupMembersComponent} from '../../components/group-members/group-member
 import {PushSubscriptionService} from '../../utils/push/push-subscription.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LocalDatePipe } from '../../utils/i18n/local-date.pipe';
+import { MessageTextPipe } from '../../utils/i18n/message-text.pipe';
 import { LanguageService } from '../../utils/i18n/language.service';
 const HEARTBEAT_INTERVAL_MS = 60000;
 const ARNO_USER_ID = '00000000-0000-0000-0000-000000000001';
@@ -57,7 +58,7 @@ const MAX_PENDING_MESSAGES = 3;
 
 @Component({
   selector: 'app-main',
-  imports: [TranslocoPipe, LocalDatePipe, 
+  imports: [TranslocoPipe, LocalDatePipe, MessageTextPipe, 
     ChatListComponent,
     FormsModule,
     PickerComponent,
@@ -1107,7 +1108,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     const title = notification.chatName || this.i18n.translate('notifications.newMessage');
     const body = this.isMediaNotificationType(notification.type)
       ? this.mediaSentBody(notification.messageType)
-      : (notification.content || '');
+      : this.i18n.renderContent(notification.content);
     const chatId = notification.chatId;
     this.browserNotifications.notify(title, body, () => {
       this.ngZone.run(() => {

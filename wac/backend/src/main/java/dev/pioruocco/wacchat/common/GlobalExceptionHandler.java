@@ -1,6 +1,9 @@
 package dev.pioruocco.wacchat.common;
 
+import dev.pioruocco.wacchat.common.i18n.Messages;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +28,10 @@ import java.util.stream.Collectors;
  */
 @RestControllerAdvice
 @Slf4j
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    private final Messages messages;
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex, HttpServletRequest request) {
@@ -54,7 +60,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
         HttpStatus status = resolveAnnotatedStatus(ex.getClass());
-        String message = status == HttpStatus.INTERNAL_SERVER_ERROR ? "Errore interno del server" : ex.getMessage();
+        String message = status == HttpStatus.INTERNAL_SERVER_ERROR ? messages.get("error.internal", LocaleContextHolder.getLocale()) : ex.getMessage();
         if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
             log.error("Unhandled exception on {}", request.getRequestURI(), ex);
         }

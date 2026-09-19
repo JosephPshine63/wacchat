@@ -25,7 +25,7 @@
     "sentVideo": "Il t'a envoyé une vidéo",
     "sentVoice": "Il t'a envoyé un message vocal",
     "newRequest": "Nouvelle demande de chat",
-    "wantsToChat": "Il veut entamer une discussion avec toi",
+    "wantsToChat": "Il veut entamer une conversation avec toi",
     "newGroup": "Nouveau groupe",
     "addedToGroup": "Tu as été ajouté à un groupe",
     "incomingCall": "Appel entrant",
@@ -53,7 +53,7 @@
       "none": "Personne",
       "birds-solid": "Petits oiseaux",
       "birds-red": "Petits oiseaux rouges",
-      "birds-outline": "Petits oiseaux en accompagnement"
+      "birds-outline": "Petits oiseaux en contour"
     }
   },
   "sessionBlocked": {
@@ -66,8 +66,8 @@
     "cancel": "Annuler la réponse"
   },
   "forwardPicker": {
-    "title": "Transmettre à…",
-    "empty": "Pas de chat disponible."
+    "title": "Transférer à…",
+    "empty": "Aucun chat disponible."
   },
   "audioPlayer": {
     "pause": "Pause",
@@ -114,7 +114,7 @@
     "title": "Les membres du groupe",
     "you": "(toi)",
     "admin": "Admin",
-    "leave": "Quitter le groupe",
+    "leave": "Quitte le groupe",
     "remove": "Retirer du groupe",
     "add": "Ajouter un membre",
     "emptyAdd": "Y a pas d'autre contact à ajouter."
@@ -149,7 +149,13 @@
     "reject": "Refuser",
     "accept": "Accepter",
     "mute": "Muto",
-    "hangUp": "Raccroche"
+    "hangUp": "Raccroche",
+    "summary": {
+      "missed": "📞 Appel manqué",
+      "ended": "📞 Appel terminé - durée {{duration}}",
+      "groupEnded": "📞 Appel de groupe terminé",
+      "groupEndedDuration": "📞 Appel de groupe terminé – durée : {{duration}} ({{count}} participants)"
+    }
   },
   "chatList": {
     "title": "Chat",
@@ -189,7 +195,7 @@
       "starred": "Favoris ({{ count }})"
     },
     "noMedia": "Aucun fichier multimédia n'a été partagé dans ce chat.",
-    "noStarred": "Il n'y a aucun message favori dans ce chat.",
+    "noStarred": "Il n'y a aucun message favori dans cette discussion.",
     "blockedBanner": "Tu as bloqué cet utilisateur",
     "blockUser": "Bloquer un utilisateur",
     "reportSent": "Signalement envoyé",
@@ -249,7 +255,7 @@
     "jumpToLatest": "Nouveaux messages",
     "request": {
       "rejected": "Demande de chat refusée.",
-      "wantsToChat": "{{ name }} Il veut démarrer une discussion avec toi."
+      "wantsToChat": "{{ name }} Il veut entamer une discussion avec toi."
     },
     "recording": {
       "stop": "Ferma",
@@ -264,7 +270,7 @@
       "attach": "Joindre un fichier",
       "emoji": "Emoji",
       "placeholder": "Écris un message…",
-      "limitReached": "Limite du nombre de messages de requête atteinte",
+      "limitReached": "Limite du nombre de messages de demande atteinte",
       "send": "Envoyer",
       "voice": "Vocal"
     },

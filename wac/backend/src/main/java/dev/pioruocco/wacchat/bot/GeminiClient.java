@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Calls Google's Gemini generateContent API. Every failure mode (network error, 4xx, 5xx,
@@ -35,9 +36,9 @@ public class GeminiClient {
 
     @CircuitBreaker(name = "gemini", fallbackMethod = "generateReplyFallback")
     @Retry(name = "gemini")
-    public String generateReply(List<GeminiContent> conversation) {
+    public String generateReply(List<GeminiContent> conversation, Locale locale) {
         GenerateContentRequest request = new GenerateContentRequest(
-                SystemInstruction.of(BotConstants.SYSTEM_INSTRUCTION), conversation);
+                SystemInstruction.of(BotConstants.systemInstruction(locale)), conversation);
         GenerateContentResponse response = webClient.post()
                 .uri("/v1beta/models/" + model + ":generateContent")
                 .bodyValue(request)
@@ -59,7 +60,7 @@ public class GeminiClient {
     }
 
     @SuppressWarnings("unused")
-    private String generateReplyFallback(List<GeminiContent> conversation, Throwable t) {
+    private String generateReplyFallback(List<GeminiContent> conversation, Locale locale, Throwable t) {
         if (t instanceof WebClientResponseException wcre) {
             log.warn("Gemini call failed with status {}: {}", wcre.getStatusCode(), wcre.getResponseBodyAsString());
         } else {

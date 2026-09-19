@@ -25,10 +25,8 @@ public class CallSignalListener {
         // are mid-call plumbing between already-connected parties, END/REJECT/BUSY/MISSED/
         // PARTICIPANT_JOINED are post-hoc status updates.
         if (event.signal().type() == CallSignalType.INVITE) {
-            String callerName = event.signal().fromUserName();
-            String title = (callerName != null && !callerName.isBlank())
-                    ? callerName + " ti sta chiamando" : "Chiamata in arrivo";
-            pushNotificationClient.send(event.toUserId(), title, "Tocca per rispondere", event.signal().chatId());
+            // Text is built by backend in the recipient's language (see PushInternalController).
+            pushNotificationClient.sendCallInvite(event.toUserId(), event.signal().fromUserName(), event.signal().chatId());
         }
     }
 }

@@ -160,15 +160,17 @@ public class CallService {
     private void leaveSystemMessage(CallSession session) {
         Instant earliestJoin = session.earliestInviteeJoinAt();
         if (session.isGroupCall()) {
+            // Language-neutral tokens ("i18n:<key>|<arg>|..."), rendered per viewer by the
+            // frontend (and by backend for push bodies) — the row is shared by every member.
             String content = earliestJoin != null
-                    ? "📞 Chiamata di gruppo terminata - durata " + formatDuration(Duration.between(earliestJoin, Instant.now()))
-                            + " (" + session.everJoinedCount() + " partecipanti)"
-                    : "📞 Chiamata di gruppo terminata";
+                    ? "i18n:call.summary.groupEndedDuration|" + formatDuration(Duration.between(earliestJoin, Instant.now()))
+                            + "|" + session.everJoinedCount()
+                    : "i18n:call.summary.groupEnded";
             internalMessageClient.sendGroupSystemMessage(session.getChatId(), session.getCallerId(), content);
         } else {
             String content = earliestJoin != null
-                    ? "📞 Chiamata terminata - durata " + formatDuration(Duration.between(earliestJoin, Instant.now()))
-                    : "📞 Chiamata persa";
+                    ? "i18n:call.summary.ended|" + formatDuration(Duration.between(earliestJoin, Instant.now()))
+                    : "i18n:call.summary.missed";
             String calleeId = session.allParticipantIds().stream()
                     .filter(id -> !id.equals(session.getCallerId()))
                     .findFirst()

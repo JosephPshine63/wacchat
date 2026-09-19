@@ -85,7 +85,7 @@
   "callInvitee": {
     "titleVideo": "¿A quién quieres invitar a la videollamada?",
     "titleVoice": "¿A quién quieres invitar a la llamada de voz?",
-    "hint": "Hasta un{{ count }}s participantes.",
+    "hint": "Hasta un {{ count }} s participantes.",
     "empty": "No hay ningún otro miembro en el grupo.",
     "submit": "Llama a ({{ count }})"
   },
@@ -133,7 +133,7 @@
   },
   "usernameSetup": {
     "title": "Elige tu nombre de usuario",
-    "text": "Tu nombre de usuario es único y se mostrará a los demás usuarios en lugar de tu nombre. Puedes usar letras minúsculas, números, guiones bajos, guiones y puntos (entre 3 y 20 caracteres).",
+    "text": "Tu nombre de usuario es único y se mostrará a los demás usuarios en lugar de tu nombre. Puedes usar letras minúsculas, números, guiones bajos, guiones y puntos (de 3 a 20 caracteres).",
     "placeholder": "tu_nombre_de_usuario",
     "available": "Disponible",
     "taken": "El nombre de usuario ya está en uso",
@@ -149,7 +149,13 @@
     "reject": "Rechazar",
     "accept": "Aceptar",
     "mute": "Mudo",
-    "hangUp": "Cuelga el teléfono"
+    "hangUp": "Cuelga el teléfono",
+    "summary": {
+      "missed": "📞 Llamada perdida",
+      "ended": "📞 Llamada finalizada - duración {{duration}}",
+      "groupEnded": "📞 La llamada en grupo ha terminado",
+      "groupEndedDuration": "📞 Llamada en grupo finalizada - duración {{duration}} ({{count}} participantes)"
+    }
   },
   "chatList": {
     "title": "Chat",
@@ -166,18 +172,18 @@
     },
     "unblock": "Desbloquear",
     "noBlocked": "No hay ningún usuario bloqueado.",
-    "incomingRequests": "Solicitudes pendientes ({{ count }})",
+    "incomingRequests": "Solicitudes entrantes ({{ count }})",
     "favorite": "Favorito",
     "muteNotifications": "Silenciar notificaciones",
     "archive": "Archivar",
-    "pending": "A la espera de...",
+    "pending": "A la espera",
     "lastSeen": "Visto en {{ date }}",
     "empty": "Todavía no hay ningún chat…"
   },
   "userCard": {
     "copyUsername": "Copia el nombre de usuario",
     "memberSince": "Miembro desde el {{ date }}",
-    "lastSeen": "Último acceso{{ date }} informo",
+    "lastSeen": "Último acceso {{ date }} me informo",
     "neverConnected": "Nunca se ha conectado",
     "requestSent": "Solicitud enviada",
     "sendRequest": "Enviar solicitud de chat",
@@ -185,7 +191,7 @@
     "unmute": "Reactivar notificaciones",
     "tabs": {
       "info": "Información",
-      "media": "Medios ({{ count }})",
+      "media": "Medios de comunicación ({{ count }})",
       "starred": "Favoritos ({{ count }})"
     },
     "noMedia": "No hay ningún archivo multimedia compartido en este chat.",
@@ -210,7 +216,7 @@
   "main": {
     "ageDenied": {
       "title": "Acceso no permitido",
-      "text": "Lo sentimos, esta aplicación es solo para usuarios mayores de edad (18+)."
+      "text": "Lo sentimos, esta aplicación es solo para mayores de edad (18+)."
     },
     "ageGate": {
       "title": "Verificación de la edad",
@@ -219,7 +225,7 @@
       "yes": "Sí, tengo 18 años o más",
       "no": "No, soy menor de edad"
     },
-    "demoBanner": "<strong>Aplicación de demostración</strong> — No introduzcas datos personales reales. Las cuentas que lleven inactivas más de 2 meses se eliminan automáticamente.",
+    "demoBanner": "<strong>Aplicación de demostración</strong> — No introduzcas datos personales reales. Las cuentas que lleven más de 2 meses inactivas se eliminan automáticamente.",
     "nav": {
       "username": "Tu nombre de usuario",
       "changePhoto": "Cambiar foto de perfil",
@@ -278,7 +284,7 @@
     },
     "bug": {
       "unavailable": "Por ahora, no puedes informar de errores en este entorno.",
-      "prefix": "Notificación de error: "
+      "prefix": "Notificación de un error: "
     },
     "confirmDelete": "¿Quieres borrar este mensaje?"
   }

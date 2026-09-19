@@ -234,7 +234,7 @@
                   ></app-message-actions-menu>
                 }
                 @if (message.replyToId) {
-                  <div class="reply-quote-snippet">{{ findMessageById(message.replyToId)?.content || ('main.message.fallbackQuote' | transloco) }}</div>
+                  <div class="reply-quote-snippet">{{ findMessageById(message.replyToId)?.content | messageText }}{{ findMessageById(message.replyToId)?.content ? '' : ('main.message.fallbackQuote' | transloco) }}</div>
                 }
                 @if (message.forwarded) {
                   <span class="forwarded-badge"><i class="fa-solid fa-share"></i> {{ 'main.message.forwarded' | transloco }}</span>
@@ -242,7 +242,7 @@
                 @if (message.deleted) {
                   <span class="bubble-text deleted-placeholder"><i class="fa-solid fa-ban"></i> {{ 'main.message.deleted' | transloco }}</span>
                 } @else if (message.type === 'TEXT') {
-                  <span class="bubble-text">{{ message.content }}</span>
+                  <span class="bubble-text">{{ message.content | messageText }}</span>
                 } @else if (message.type === 'VIDEO') {
                   <video controls class="bubble-video" [src]="mediaSrc(message.media![0], message.type)" (dblclick)="openLightbox(message)"></video>
                 } @else if (message.type === 'AUDIO') {
@@ -302,7 +302,7 @@
                   ></app-message-actions-menu>
                 }
                 @if (message.replyToId) {
-                  <div class="reply-quote-snippet">{{ findMessageById(message.replyToId)?.content || ('main.message.fallbackQuote' | transloco) }}</div>
+                  <div class="reply-quote-snippet">{{ findMessageById(message.replyToId)?.content | messageText }}{{ findMessageById(message.replyToId)?.content ? '' : ('main.message.fallbackQuote' | transloco) }}</div>
                 }
                 @if (message.forwarded) {
                   <span class="forwarded-badge"><i class="fa-solid fa-share"></i> {{ 'main.message.forwarded' | transloco }}</span>
@@ -310,7 +310,7 @@
                 @if (message.deleted) {
                   <span class="bubble-text deleted-placeholder"><i class="fa-solid fa-ban"></i> {{ 'main.message.deleted' | transloco }}</span>
                 } @else if (message.type === 'TEXT') {
-                  <span class="bubble-text">{{ message.content }}</span>
+                  <span class="bubble-text">{{ message.content | messageText }}</span>
                 } @else if (message.type === 'VIDEO') {
                   <video controls class="bubble-video" [src]="mediaSrc(message.media![0], message.type)" (dblclick)="openLightbox(message)"></video>
                 } @else if (message.type === 'AUDIO') {

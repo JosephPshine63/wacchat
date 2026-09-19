@@ -7,6 +7,15 @@ export const DEFAULT_LANG: LangId = 'it';
 
 const LANG_STORAGE_KEY = 'appLang';
 
+const TOKEN_PREFIX = 'i18n:';
+/** Allowed summary tokens (written by call-service) and the names of their positional args. */
+const SUMMARY_PARAMS: Record<string, string[]> = {
+  'call.summary.missed': [],
+  'call.summary.ended': ['duration'],
+  'call.summary.groupEnded': [],
+  'call.summary.groupEndedDuration': ['duration', 'count'],
+};
+
 /** Native names shown in the language picker (never translated). */
 export const LANG_LABELS: Record<LangId, string> = {
   it: 'Italiano',
@@ -80,5 +89,22 @@ export class LanguageService {
 
   translate(key: string, params?: Record<string, unknown>): string {
     return this.transloco.translate(key, params);
+  }
+
+  /**
+   * Call summaries are stored as language-neutral tokens ("i18n:call.summary.ended|03:12") because
+   * one chat row is read by several people in different languages. Anything else — including a
+   * user typing "i18n:..." by hand — comes back unchanged; only call.summary.* keys are honoured.
+   */
+  renderContent(content: string | null | undefined): string {
+    if (!content?.startsWith(TOKEN_PREFIX)) {
+      return content ?? '';
+    }
+    const [key, ...args] = content.slice(TOKEN_PREFIX.length).split('|');
+    const paramNames = SUMMARY_PARAMS[key];
+    if (!paramNames) {
+      return content;
+    }
+    return this.translate(key, Object.fromEntries(paramNames.map((name, i) => [name, args[i] ?? ''])));
   }
 }

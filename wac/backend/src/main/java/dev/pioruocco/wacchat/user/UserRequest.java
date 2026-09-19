@@ -14,8 +14,8 @@ import lombok.Setter;
 public class UserRequest {
 
     @NotBlank
-    @Size(min = 3, max = 20, message = "Lo username deve avere tra 3 e 20 caratteri")
-    @Pattern(regexp = "^[a-z0-9_.-]+$", message = "Solo lettere minuscole, numeri, underscore, trattini e punti")
+    @Size(min = 3, max = 20, message = "{user.username.size}")
+    @Pattern(regexp = "^[a-z0-9_.-]+$", message = "{user.username.pattern}")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 }

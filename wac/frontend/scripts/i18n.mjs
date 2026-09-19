@@ -2,7 +2,7 @@
 /**
  * i18n tooling. Italian is the source language; en/fr/de/es are generated with DeepL.
  *
- *   node scripts/i18n.mjs translate [--lang=fr] [--force] [--dry-run]
+ *   node scripts/i18n.mjs translate [--lang=fr] [--bundle=frontend|backend] [--force] [--dry-run]
  *   node scripts/i18n.mjs check
  *
  * `translate` only sends keys that are new or whose Italian source changed (tracked by a hash in
@@ -37,7 +37,13 @@ const PROTECTED_TERMS = ['WacChat', 'Arno'];
  */
 const BUNDLES = [
   { name: 'frontend', format: 'json', file: (l) => join(FRONTEND, `public/i18n/${l}.json`) },
-  // { name: 'backend', format: 'properties', file: (l) => join(ROOT, `wac/backend/src/main/resources/i18n/messages_${l}.properties`) },
+  // Spring MessageSource bundle: Italian is the base file (messages.properties), the rest are messages_<lang>.properties.
+  {
+    name: 'backend',
+    format: 'properties',
+    file: (l) => join(ROOT, `wac/backend/src/main/resources/messages${l === SOURCE_LANG ? '' : `_${l}`}.properties`),
+    lock: join(ROOT, 'wac/backend/.i18n-lock.json'), // kept out of src/main/resources so it isn't packaged
+  },
 ];
 
 // ---------- bundle IO ----------
@@ -66,7 +72,9 @@ function parseProperties(text) {
     if (!line || line.startsWith('#') || line.startsWith('!')) continue;
     const i = line.indexOf('=');
     if (i < 0) continue;
-    out[line.slice(0, i).trim()] = line.slice(i + 1).trim().replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
+    // One key per line, "\n" for newlines (the only escapes our bundles use, plus \\ and \uXXXX).
+    out[line.slice(0, i).trim()] = line.slice(i + 1).trim().replace(/\\(n|t|\\|u[0-9a-fA-F]{4})/g, (_, e) =>
+      e === 'n' ? '\n' : e === 't' ? '\t' : e === '\\' ? '\\' : String.fromCharCode(parseInt(e.slice(1), 16)));
   }
   return out;
 }
@@ -80,10 +88,10 @@ function writeBundle(bundle, lang, flat) {
   const keys = Object.keys(flat);
   const body = bundle.format === 'json'
     ? JSON.stringify(unflatten(flat), null, 2) + '\n'
-    : keys.map((k) => `${k}=${flat[k]}`).join('\n') + '\n';
+    : keys.map((k) => `${k}=${flat[k].replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/\t/g, '\\t')}`).join('\n') + '\n';
   writeFileSync(bundle.file(lang), body);
 }
-const lockPath = (bundle) => join(dirname(bundle.file(SOURCE_LANG)), '.i18n-lock.json');
+const lockPath = (bundle) => bundle.lock ?? join(dirname(bundle.file(SOURCE_LANG)), '.i18n-lock.json');
 const readLock = (bundle) => (existsSync(lockPath(bundle)) ? JSON.parse(readFileSync(lockPath(bundle), 'utf8')) : {});
 const hash = (s) => createHash('sha1').update(s).digest('hex').slice(0, 12);
 
@@ -95,6 +103,8 @@ const htmlTags = (s) => (s.match(/<\/?[a-z][^>]*>/gi) ?? []).sort();
 /** Wraps things DeepL must not touch in <x> (declared via ignore_tags) and escapes XML chars. */
 function protect(text, wide = false) {
   let s = text.replace(/&/g, '&amp;').replace(/<(?![/]?[a-z][^>]*>)/gi, '&lt;');
+  // URLs and e-mail addresses are never translated.
+  s = s.replace(/https?:\/\/[^\s<]+|[\w.+-]+@[\w-]+\.[\w.]+/g, (m) => `<x>${m}</x>`);
   // `wide` also swallows punctuation glued to a placeholder, e.g. "({{ n }})" — DeepL sometimes
   // returns an empty string for a bare "(<x>…</x>)".
   const ph = wide ? new RegExp(`[(\\[]?(?:${PLACEHOLDER.source})[)\\]]?`, 'g') : PLACEHOLDER;
@@ -119,7 +129,7 @@ function loadApiKey() {
 }
 const endpoint = (key) => (key.endsWith(':fx') ? 'https://api-free.deepl.com' : 'https://api.deepl.com');
 
-async function deeplTranslate(key, texts, lang, wide = false) {
+async function deeplRaw(key, texts, lang, wide = false) {
   const cfg = LANGS[lang];
   const body = {
     text: texts.map((t) => protect(t, wide)),
@@ -147,6 +157,36 @@ async function deeplTranslate(key, texts, lang, wide = false) {
   }
 }
 
+/**
+ * Multi-line strings are translated line by line and re-joined: with tag handling on, DeepL
+ * shuffles line breaks that sit next to protected spans (it turned "Ciao {0},\n\nBenvenuto"
+ * into "Hi {0}\n\n,\n\nWelcome"). Single-line strings pass through untouched.
+ */
+async function deeplTranslate(key, texts, lang, wide = false) {
+  const lines = texts.flatMap((t) => t.split('\n')).filter((l) => l.trim());
+  const translated = [];
+  for (let i = 0; i < lines.length; i += 50) {
+    translated.push(...(await deeplRaw(key, lines.slice(i, i + 50), lang, wide)));
+  }
+  let n = 0;
+  return texts.map((t) => t.split('\n').map((l) => (l.trim() ? translated[n++] : l)).join('\n'));
+}
+
+/**
+ * DeepL sometimes swallows the space between a word and a protected placeholder
+ * ("Dauer {{duration}}" -> "Dauer{{duration}}"). If the Italian source had a space before/after
+ * a placeholder and the translation has a letter/digit glued to it, put the space back.
+ */
+function repairSpacing(source, value) {
+  let out = value;
+  for (const ph of new Set(source.match(PLACEHOLDER) ?? [])) {
+    const esc = ph.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (new RegExp(`\\s${esc}`).test(source)) out = out.replace(new RegExp(`([\\p{L}\\p{N}])(${esc})`, 'gu'), '$1 $2');
+    if (new RegExp(`${esc}\\s`).test(source)) out = out.replace(new RegExp(`(${esc})([\\p{L}\\p{N}])`, 'gu'), '$1 $2');
+  }
+  return out;
+}
+
 /** A translation is usable if it is non-empty and keeps the same placeholders and HTML tags. */
 function isValid(source, value) {
   return Boolean(value?.trim())
@@ -158,6 +198,7 @@ async function translate(args) {
   const only = args.find((a) => a.startsWith('--lang='))?.split('=')[1];
   const force = args.includes('--force');
   const dry = args.includes('--dry-run');
+  const bundleOnly = args.find((a) => a.startsWith('--bundle='))?.split('=')[1];
   const langs = only ? [only] : Object.keys(LANGS);
   for (const l of langs) if (!LANGS[l]) throw new Error(`Unsupported language: ${l}`);
 
@@ -166,6 +207,7 @@ async function translate(args) {
 
   let totalChars = 0;
   for (const bundle of BUNDLES) {
+    if (bundleOnly && bundle.name !== bundleOnly) continue;
     const source = readBundle(bundle, SOURCE_LANG);
     if (!source) throw new Error(`Missing source file ${bundle.file(SOURCE_LANG)}`);
     const lock = readLock(bundle);
@@ -192,6 +234,7 @@ async function translate(args) {
             console.error(`  ! ${lang}: DeepL result for "${k}" is unusable, left untranslated (fix by hand)`);
             continue;
           }
+          value = repairSpacing(source[k], value);
           result[k] = value;
           locked[k] = hash(source[k]);
         }
@@ -231,6 +274,8 @@ function check() {
         if (!t[k]?.trim()) { errors.push(`[${bundle.name}] ${lang}: missing or empty key ${k}`); continue; }
         if (placeholders(source[k]).join('|') !== placeholders(t[k]).join('|'))
           errors.push(`[${bundle.name}] ${lang}: placeholder mismatch in ${k}: "${source[k]}" vs "${t[k]}"`);
+        if (source[k].split('\n').length !== t[k].split('\n').length)
+          errors.push(`[${bundle.name}] ${lang}: line-break count differs in ${k}`);
         if (htmlTags(source[k]).join('|') !== htmlTags(t[k]).join('|'))
           errors.push(`[${bundle.name}] ${lang}: HTML tag mismatch in ${k}`);
       }

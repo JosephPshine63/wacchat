@@ -19,7 +19,7 @@ class PushNotificationClientTest {
         PushNotificationClient client = new PushNotificationClient(WebClient.create("http://localhost"), 2000L);
 
         assertThatCode(() -> ReflectionTestUtils.invokeMethod(
-                client, "sendFallback", "user-1", "title", "body", "chat-1", new RuntimeException("backend down")))
+                client, "sendCallInviteFallback", "user-1", "Ada", "chat-1", new RuntimeException("backend down")))
                 .doesNotThrowAnyException();
     }
 }
