@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {PushSubscriptionService} from '../push/push-subscription.service';
+import {detectInitialLang} from '../i18n/language.service';
 
 const TAB_ID_STORAGE_KEY = 'wacchat_tab_id';
 
@@ -38,11 +39,13 @@ export class KeycloakService {
     const authenticated = await this.keycloak.init({
       onLoad: 'login-required',
       checkLoginIframe: false,
+      // Sent as ui_locales so the Keycloak login theme opens in the language the user chose in the app.
+      locale: detectInitialLang(),
     });
   }
 
   async login() {
-    await this.keycloak.login();
+    await this.keycloak.login({ locale: detectInitialLang() });
   }
 
   get userId(): string {

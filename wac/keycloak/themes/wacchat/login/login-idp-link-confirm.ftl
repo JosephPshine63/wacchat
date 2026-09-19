@@ -41,8 +41,7 @@
 
 <div class="wac-disclaimer">
   <span>&#9888;</span>
-  App dimostrativa per uso personale &mdash; non inserire dati personali reali.
-  Gli account vengono eliminati automaticamente dopo 21&nbsp;giorni dalla creazione.
+  ${msg("wacDisclaimer")}
 </div>
 
 </body>

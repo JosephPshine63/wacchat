@@ -144,9 +144,8 @@
 
 <div class="wac-disclaimer">
   <span>&#9888;</span>
-  App dimostrativa per uso personale &mdash; non inserire dati personali reali.
-  Gli account inattivi vengono eliminati automaticamente dopo 2&nbsp;mesi.
-  <a href="${url.resourcesPath}/privacy.html" target="_blank" rel="noopener">Privacy e termini</a>
+  ${msg("wacDisclaimer")}
+  <a href="${url.resourcesPath}/privacy.html" target="_blank" rel="noopener">${msg("wacPrivacyLink")}</a>
 </div>
 
 <script>

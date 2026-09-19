@@ -24,13 +24,13 @@
     </#if>
 
     <p class="wac-page-subtitle" style="margin-bottom:1.25rem">
-      Inserisci l'email con cui hai effettuato l'accesso a WacChat: ti invieremo un link per reimpostare la password.
-      <br><strong>Attenzione:</strong> non è lo username della chat (quello con la @ mostrato agli altri utenti), ma l'email dell'account di accesso.
+      ${msg("wacResetIntro")}
+      <br>${kcSanitize(msg("wacResetWarning"))?no_esc}
     </p>
 
     <form id="kc-reset-password-form" action="${url.loginAction}" method="post">
       <div class="wac-field">
-        <label for="username">Email di accesso</label>
+        <label for="username">${msg("wacResetEmailLabel")}</label>
         <input id="username" name="username" type="text"
                value="${(auth.attemptedUsername!'')}"
                autofocus
@@ -56,8 +56,7 @@
 
 <div class="wac-disclaimer">
   <span>&#9888;</span>
-  App dimostrativa per uso personale &mdash; non inserire dati personali reali.
-  Gli account vengono eliminati automaticamente dopo 21&nbsp;giorni dalla creazione.
+  ${msg("wacDisclaimer")}
 </div>
 
 </body>

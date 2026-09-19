@@ -44,6 +44,15 @@ const BUNDLES = [
     file: (l) => join(ROOT, `wac/backend/src/main/resources/messages${l === SOURCE_LANG ? '' : `_${l}`}.properties`),
     lock: join(ROOT, 'wac/backend/.i18n-lock.json'), // kept out of src/main/resources so it isn't packaged
   },
+  // Custom Keycloak login theme. Keycloak runs messages through MessageFormat, so files hold ''
+  // for an apostrophe; we work with plain ' in memory (messageFormat) so DeepL sees normal text.
+  {
+    name: 'keycloak',
+    format: 'properties',
+    messageFormat: true,
+    file: (l) => join(ROOT, `wac/keycloak/themes/wacchat/login/messages/messages_${l}.properties`),
+    lock: join(ROOT, 'wac/keycloak/.i18n-lock.json'),
+  },
 ];
 
 // ---------- bundle IO ----------
@@ -82,13 +91,16 @@ function readBundle(bundle, lang) {
   const path = bundle.file(lang);
   if (!existsSync(path)) return null;
   const text = readFileSync(path, 'utf8');
-  return bundle.format === 'json' ? flatten(JSON.parse(text)) : parseProperties(text);
+  if (bundle.format === 'json') return flatten(JSON.parse(text));
+  const props = parseProperties(text);
+  if (bundle.messageFormat) for (const k of Object.keys(props)) props[k] = props[k].replace(/''/g, "'");
+  return props;
 }
 function writeBundle(bundle, lang, flat) {
   const keys = Object.keys(flat);
   const body = bundle.format === 'json'
     ? JSON.stringify(unflatten(flat), null, 2) + '\n'
-    : keys.map((k) => `${k}=${flat[k].replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/\t/g, '\\t')}`).join('\n') + '\n';
+    : keys.map((k) => `${k}=${(bundle.messageFormat ? flat[k].replace(/'/g, "''") : flat[k]).replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/\t/g, '\\t')}`).join('\n') + '\n';
   writeFileSync(bundle.file(lang), body);
 }
 const lockPath = (bundle) => bundle.lock ?? join(dirname(bundle.file(SOURCE_LANG)), '.i18n-lock.json');
