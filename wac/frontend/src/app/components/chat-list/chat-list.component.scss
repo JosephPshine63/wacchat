@@ -20,9 +20,14 @@
 }
 
 .header-title {
+  margin-right: auto;
   font-size: 1em;
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.header-lang {
+  margin-right: 6px;
 }
 
 .header-action-btn {

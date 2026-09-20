@@ -1,6 +1,7 @@
 <div class="chat-list-header">
   <div class="header-top">
     <h3 class="header-title">{{ 'chatList.title' | transloco }}</h3>
+    <app-language-switcher class="header-lang"></app-language-switcher>
     @if (!searchNewContact) {
       <button class="header-action-btn" (click)="searchContact()" [title]="'chatList.newChat' | transloco">
         <i class="fas fa-comment-medical"></i>

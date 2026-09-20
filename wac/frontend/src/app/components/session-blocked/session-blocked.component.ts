@@ -4,12 +4,13 @@ import { KeycloakService } from '../../utils/keycloak/keycloak.service';
 import { SessionGuardService } from '../../utils/session/session-guard.service';
 import { DraftService } from '../../utils/draft/draft.service';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-session-blocked',
   templateUrl: './session-blocked.component.html',
   styleUrl: './session-blocked.component.scss',
-  imports: [TranslocoPipe]
+  imports: [TranslocoPipe, LanguageSwitcherComponent]
 })
 export class SessionBlockedComponent {
 

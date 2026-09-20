@@ -13,11 +13,12 @@ import {MuteService} from '../../utils/mute/mute.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { LocalDatePipe } from '../../utils/i18n/local-date.pipe';
 import { MessageTextPipe } from '../../utils/i18n/message-text.pipe';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-chat-list',
   templateUrl: './chat-list.component.html',
-  imports: [TranslocoPipe, LocalDatePipe, MessageTextPipe,
+  imports: [TranslocoPipe, LocalDatePipe, MessageTextPipe, LanguageSwitcherComponent,
     FormsModule
   ],
   styleUrl: './chat-list.component.scss'
