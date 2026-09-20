@@ -132,6 +132,10 @@ npm run i18n:check        # offline consistency check (also runs in CI)
 
 Backend-generated text and the Keycloak login theme are still Italian-only.
 
+## Public landing page
+
+`https://wacchat.win/` shows a static, indexable landing page (Italian, plus `/en/`, `/fr/`, `/de/`, `/es/`) to visitors who haven't logged in yet; its "Accedi" button goes to `/enter`, which sets a cookie and opens the app. Source: `wac/frontend/landing/` (rendered by `npm run build`; texts translated with `npm run i18n:translate -- --bundle=landing`). Details in `CLAUDE.md` → *Public landing / SEO*.
+
 ---
 
 ## Configuration
