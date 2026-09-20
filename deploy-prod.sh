@@ -418,6 +418,8 @@ fi
 if service_selected frontend; then
   log "Building frontend image: $FULL_FRONTEND ..."
   docker build $BUILD_FLAGS \
+    --build-arg APP_VERSION="$(git -C "$SCRIPT_DIR" rev-parse --short HEAD 2>/dev/null || echo dev)" \
+    --build-arg APP_BUILD_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
     -t "$FULL_FRONTEND" \
     -f "$FRONTEND_DIR/Dockerfile" \
     "$FRONTEND_DIR"

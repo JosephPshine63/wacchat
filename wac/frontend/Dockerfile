@@ -3,6 +3,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps
 COPY . .
+# Stamped by deploy-prod.sh; served as /version.json and shown in the app's banner.
+ARG APP_VERSION=dev
+ARG APP_BUILD_TIME=
+RUN printf '{"version":"%s","builtAt":"%s"}\n' "$APP_VERSION" "$APP_BUILD_TIME" > public/version.json
 RUN npm run build
 
 FROM nginx:alpine

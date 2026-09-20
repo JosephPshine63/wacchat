@@ -24,6 +24,9 @@
   @if (showDemoBanner) {
     <div class="demo-banner">
       <span [innerHTML]="'main.demoBanner' | transloco"></span>
+      @if (buildInfo.label(); as build) {
+        <span class="build-stamp">{{ build }}</span>
+      }
       <button class="demo-banner-close" (click)="dismissBanner()" [attr.aria-label]="'common.close' | transloco">✕</button>
     </div>
   }

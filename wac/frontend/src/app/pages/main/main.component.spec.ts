@@ -24,6 +24,8 @@ describe('MainComponent', () => {
     const fakePushSubscriptionService = { registerServiceWorkerAndSubscribe: () => Promise.resolve() } as any;
     const fakeLanguageService = { translate: (key: string) => key, intlLocale: 'it-IT' } as any;
 
+    const fakeBuildInfo = { label: () => null } as any;
+
     component = new MainComponent(
       fakeChatService,
       fakeMessageService,
@@ -39,7 +41,8 @@ describe('MainComponent', () => {
       fakeSupportService,
       fakeErrorLogService,
       fakePushSubscriptionService,
-      fakeLanguageService
+      fakeLanguageService,
+      fakeBuildInfo
     );
 
     component.chatMessages = [

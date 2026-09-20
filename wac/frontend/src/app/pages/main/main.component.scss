@@ -119,6 +119,15 @@
   color: var(--text-primary);
 }
 
+.build-stamp {
+  margin-left: auto;
+  padding: 0 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
 .demo-banner-close {
   background: none;
   border: none;

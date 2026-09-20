@@ -28,6 +28,7 @@ import {UserCardComponent} from '../../components/user-card/user-card.component'
 import {AvatarUploadComponent} from '../../components/avatar-upload/avatar-upload.component';
 import {SessionBlockedComponent} from '../../components/session-blocked/session-blocked.component';
 import {SessionGuardService} from '../../utils/session/session-guard.service';
+import {BuildInfoService} from '../../utils/version/build-info.service';
 import {BrowserNotificationService} from '../../utils/notifications/browser-notification.service';
 import {SettingsComponent} from '../../components/settings/settings.component';
 import {MediaLightboxComponent} from '../../components/media-lightbox/media-lightbox.component';
@@ -169,6 +170,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     private errorLogService: ErrorLogService,
     private pushSubscriptionService: PushSubscriptionService,
     private i18n: LanguageService,
+    protected buildInfo: BuildInfoService,
   ) {
   }
 
