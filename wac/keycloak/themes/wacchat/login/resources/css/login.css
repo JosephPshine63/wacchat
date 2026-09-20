@@ -666,3 +666,39 @@ p, span {
   background: transparent;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+/* Language links (wac-locale.ftl) */
+.wac-lang {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: rgba(30, 30, 46, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  z-index: 10;
+}
+
+.wac-lang a {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+}
+
+.wac-lang a:hover { color: #fff; }
+
+.wac-lang a.active {
+  background: #FF5525;
+  color: #fff;
+}
+
+/* Keep the fixed language bar clear of the card on narrow screens */
+@media (max-width: 520px) {
+  .wac-wrap { padding-top: 4rem; }
+}

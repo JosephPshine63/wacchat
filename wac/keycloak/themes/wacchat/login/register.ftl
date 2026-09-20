@@ -12,6 +12,7 @@
 <body>
 
 <div class="wac-wrap">
+  <#include "wac-locale.ftl">
   <div class="wac-card wac-card--wide">
 
     <div class="wac-logo"><img src="${url.resourcesPath}/img/logo.png" alt="WacChat" class="wac-logo-img">WacChat</div>
