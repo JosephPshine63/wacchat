@@ -7,7 +7,7 @@
     <title>${msg("emailForgotTitle")}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="${url.resourcesPath}/css/login.css?v=2">
+    <link rel="stylesheet" href="${url.resourcesPath}/css/login-v3.css">
 </head>
 <body>
 
