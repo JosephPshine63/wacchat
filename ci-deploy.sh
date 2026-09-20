@@ -9,17 +9,25 @@
 # service (it only logs), so this script health-checks afterwards and, if anything is
 # wrong, rolls the checkout back to <prev> and redeploys the same services from it.
 #
-# Infra-level changes (docker-compose*.yml, deploy-prod.sh, Keycloak realm/theme, RabbitMQ,
-# observability) are NOT applied automatically: a full deploy restarts PostgreSQL/Keycloak/
-# RabbitMQ on a shared host. They are reported, and applied only with --full (the workflow's
-# manual "full" dispatch) or by running ./deploy-prod.sh by hand.
+# A change under wac/keycloak/themes also makes it (idempotently) enable the realm's
+# internationalization and restart just the Keycloak container so the theme is reloaded
+# (Keycloak caches themes in production mode). --keycloak forces that step by itself.
+#
+# Other infra-level changes (docker-compose*.yml, deploy-prod.sh, Keycloak realm template,
+# RabbitMQ, observability) are NOT applied automatically: a full deploy restarts
+# PostgreSQL/Keycloak/RabbitMQ on a shared host. They are reported, and applied only with
+# --full (the workflow's manual "full" dispatch) or by running ./deploy-prod.sh by hand.
 set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-PREV="${1:?usage: ci-deploy.sh <previous-commit-sha> [--full]}"
+PREV="${1:?usage: ci-deploy.sh <previous-commit-sha> [--full|--keycloak]}"
 FULL=false
-[[ "${2:-}" == "--full" ]] && FULL=true
+KEYCLOAK=false
+case "${2:-}" in
+  --full)     FULL=true ;;
+  --keycloak) KEYCLOAK=true ;;
+esac
 
 log() { echo "[ci-deploy $(date '+%H:%M:%S')] $*"; }
 
@@ -29,6 +37,8 @@ PORT_FRONTEND=4200
 PORT_API_GATEWAY=8085
 PORT_NOTIFICATION_SERVICE=8084
 PORT_CALL_SERVICE=8086
+PORT_KEYCLOAK=8180                       # published on the host loopback only
+KEYCLOAK_CONTAINER=keycloak-wacchat
 
 # One deploy at a time, including against a manual ./deploy-prod.sh started with the same lock.
 exec 9>/tmp/wacchat-deploy.lock
@@ -52,6 +62,7 @@ if [[ "$PREV" != "$NEW" ]]; then
       # Library baked into these four images at build time (multi-stage Dockerfile).
       wac/shared-security/*)
         selected[backend]=1; selected[file-service]=1; selected[notification-service]=1; selected[call-service]=1 ;;
+      wac/keycloak/themes/*)      KEYCLOAK=true ;;
       docker-compose*.yml|deploy-prod.sh|wac/keycloak/*|wac/rabbitmq/*|observability/*|wac/database/*)
         INFRA_CHANGED+=("$file") ;;
     esac
@@ -79,11 +90,11 @@ ORDER=(backend file-service notification-service call-service api-gateway fronte
 TO_DEPLOY=()
 for svc in "${ORDER[@]}"; do [[ -n "${selected[$svc]:-}" ]] && TO_DEPLOY+=("$svc"); done
 
-if ((${#TO_DEPLOY[@]} == 0)); then
+if ((${#TO_DEPLOY[@]} == 0)) && ! $KEYCLOAK; then
   log "no service touched between ${PREV:0:7} and ${NEW:0:7} — nothing to deploy"
   exit 0
 fi
-log "deploying ${PREV:0:7} -> ${NEW:0:7}: ${TO_DEPLOY[*]}"
+log "deploying ${PREV:0:7} -> ${NEW:0:7}: ${TO_DEPLOY[*]:-}$($KEYCLOAK && echo ' +keycloak theme')"
 
 # ─── Deploy + verify ─────────────────────────────────────────────────────────
 wait_for() { # name url
@@ -105,6 +116,7 @@ verify() {
       notification-service) wait_for notification-service "http://localhost:$PORT_NOTIFICATION_SERVICE/actuator/health" || rc=1 ;;
       call-service)         wait_for call-service "http://localhost:$PORT_CALL_SERVICE/actuator/health" || rc=1 ;;
       frontend)             wait_for frontend "http://localhost:$PORT_FRONTEND/" || rc=1 ;;
+      keycloak)             wait_for keycloak "http://localhost:$PORT_KEYCLOAK/realms/wacchat/.well-known/openid-configuration" || rc=1 ;;
       file-service)
         # No host health probe in deploy-prod.sh for it: the container must at least be running.
         if [[ "$(docker inspect -f '{{.State.Running}}' wacchat-file-service 2>/dev/null)" == "true" ]]; then
@@ -125,14 +137,36 @@ deploy_all() {
   done
 }
 
-if deploy_all "${TO_DEPLOY[@]}" && verify "${TO_DEPLOY[@]}"; then
+# Keycloak caches themes in production mode, so a theme change needs a container restart. The realm
+# setting is (re)applied first because --import-realm only applies at first creation; it is
+# idempotent, and a failure there is only a warning (the theme still loads, just no language picker).
+sync_keycloak() {
+  log "=== keycloak: enable realm i18n + restart to reload the theme ==="
+  docker exec "$KEYCLOAK_CONTAINER" sh -c '
+    K=/opt/keycloak/bin/kcadm.sh
+    $K config credentials --server http://localhost:8080 --realm master \
+       --user "$KC_BOOTSTRAP_ADMIN_USERNAME" --password "$KC_BOOTSTRAP_ADMIN_PASSWORD" &&
+    $K update realms/wacchat -s internationalizationEnabled=true \
+       -s "supportedLocales=[\"it\",\"en\",\"fr\",\"de\",\"es\"]" -s defaultLocale=it
+  ' || log "WARNING: could not enable realm i18n (enable it in Realm settings > Localization)"
+  docker restart "$KEYCLOAK_CONTAINER" >/dev/null
+}
+
+VERIFY=("${TO_DEPLOY[@]}")
+if $KEYCLOAK; then VERIFY+=(keycloak); fi
+
+ok=true
+if ((${#TO_DEPLOY[@]})); then deploy_all "${TO_DEPLOY[@]}" || ok=false; fi
+if $ok && $KEYCLOAK; then sync_keycloak || ok=false; fi
+if $ok && verify "${VERIFY[@]}"; then
   log "deploy OK"
   exit 0
 fi
 
-log "deploy FAILED — rolling back to ${PREV:0:7} and redeploying ${TO_DEPLOY[*]}"
+log "deploy FAILED — rolling back to ${PREV:0:7} and redeploying ${VERIFY[*]}"
 git reset --hard "$PREV"
-deploy_all "${TO_DEPLOY[@]}" || true
-verify "${TO_DEPLOY[@]}" || log "WARNING: rollback is not healthy either — manual intervention needed"
+if ((${#TO_DEPLOY[@]})); then deploy_all "${TO_DEPLOY[@]}" || true; fi
+if $KEYCLOAK; then docker restart "$KEYCLOAK_CONTAINER" >/dev/null || true; fi
+verify "${VERIFY[@]}" || log "WARNING: rollback is not healthy either — manual intervention needed"
 log "note: schema changes applied by ddl-auto=update are not undone by the rollback"
 exit 1

@@ -11,6 +11,10 @@ on:
         description: 'Full deploy (restarts the whole stack incl. Keycloak/RabbitMQ) instead of only the changed services'
         type: boolean
         default: false
+      keycloak:
+        description: 'Only re-apply the Keycloak login theme: enable realm i18n and restart the Keycloak container'
+        type: boolean
+        default: false
 
 jobs:
   backend-services:
@@ -93,7 +97,7 @@ jobs:
       group: deploy-production
       cancel-in-progress: false
     env:
-      DEPLOY_FLAG: ${{ inputs.full && '--full' || '' }}
+      DEPLOY_FLAG: ${{ inputs.full && '--full' || inputs.keycloak && '--keycloak' || '' }}
       HAS_DEPLOY_SECRETS: ${{ secrets.TS_OAUTH_CLIENT_ID != '' && secrets.TS_OAUTH_CLIENT_SECRET != '' && secrets.DEPLOY_SSH_KEY != '' }}
     steps:
       # Until the three secrets exist the job is skipped with a warning instead of failing every push.
