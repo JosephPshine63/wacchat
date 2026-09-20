@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "node scripts/print-banner.js && ng serve",
     "build": "ng build",
+    "postbuild": "node landing/build.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "api-gen": "ng-openapi-gen --input ./src/openapi/openapi.json --output ./src/app/services",

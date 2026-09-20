@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+  <meta charset="utf-8">
+  <title>{{meta.title}}</title>
+  <meta name="description" content="{{meta.description}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#FF5525">
+  <link rel="canonical" href="{{canonical}}">
+{{{hreflang}}}
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WacChat">
+  <meta property="og:title" content="{{meta.title}}">
+  <meta property="og:description" content="{{meta.description}}">
+  <meta property="og:url" content="{{canonical}}">
+  <meta property="og:locale" content="{{ogLocale}}">
+{{{ogAlternates}}}
+  <meta property="og:image" content="{{siteUrl}}/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{meta.logoAlt}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{meta.title}}">
+  <meta name="twitter:description" content="{{meta.description}}">
+  <meta name="twitter:image" content="{{siteUrl}}/og-image.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Arvo:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/{{css}}">
+  <script type="application/ld+json">{{{jsonld}}}</script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{homeHref}}">
+      <img src="/favicon.png" width="40" height="40" alt="{{meta.logoAlt}}">
+      <span>WacChat</span>
+    </a>
+    <nav class="lang" aria-label="{{header.langLabel}}">
+{{{langNav}}}
+    </nav>
+    <a class="btn btn-small" href="/enter" rel="nofollow">{{header.login}}</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>{{hero.title}}</h1>
+      <p class="lead">{{hero.subtitle}}</p>
+      <a class="btn" href="/enter" rel="nofollow">{{hero.cta}}</a>
+      <p class="note">{{hero.note}}</p>
+    </section>
+
+    <section class="features">
+      <h2>{{features.title}}</h2>
+      <div class="grid">
+        <article><span class="icon" aria-hidden="true">👥</span><h3>{{features.chat.title}}</h3><p>{{features.chat.text}}</p></article>
+        <article><span class="icon" aria-hidden="true">💬</span><h3>{{features.messages.title}}</h3><p>{{features.messages.text}}</p></article>
+        <article><span class="icon" aria-hidden="true">📞</span><h3>{{features.calls.title}}</h3><p>{{features.calls.text}}</p></article>
+        <article><span class="icon" aria-hidden="true">🖼️</span><h3>{{features.media.title}}</h3><p>{{features.media.text}}</p></article>
+        <article><span class="icon" aria-hidden="true">🤖</span><h3>{{features.arno.title}}</h3><p>{{features.arno.text}}</p></article>
+        <article><span class="icon" aria-hidden="true">📲</span><h3>{{features.app.title}}</h3><p>{{features.app.text}}</p></article>
+      </div>
+    </section>
+
+    <section class="steps">
+      <h2>{{steps.title}}</h2>
+      <ol>
+        <li><h3>{{steps.one.title}}</h3><p>{{steps.one.text}}</p></li>
+        <li><h3>{{steps.two.title}}</h3><p>{{steps.two.text}}</p></li>
+        <li><h3>{{steps.three.title}}</h3><p>{{steps.three.text}}</p></li>
+      </ol>
+      <a class="btn" href="/enter" rel="nofollow">{{footer.cta}}</a>
+    </section>
+
+    <section class="about">
+      <h2>{{about.title}}</h2>
+      <p>{{about.text}}</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© WacChat</span>
+    <a href="https://www.linkedin.com/in/giuseppe-pio-ruocco-7b4367267/" rel="me noopener" target="_blank">{{footer.linkedin}}</a>
+  </footer>
+</body>
+</html>

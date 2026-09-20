@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "WacChat – Chat en tiempo real con llamadas de audio y vídeo",
+    "description": "WacChat: chat en tiempo real con grupos, llamadas de audio y vídeo, fotos, vídeos y mensajes de voz, y el asistente de IA Arno. En 5 idiomas, también como app.",
+    "logoAlt": "Logotipo de WacChat"
+  },
+  "header": {
+    "login": "Iniciar sesión",
+    "langLabel": "Idioma"
+  },
+  "hero": {
+    "title": "Chatea en tiempo real, sin complicaciones",
+    "subtitle": "WacChat Es una app de mensajería con chats privados y grupales, llamadas de audio y vídeo, fotos y vídeos, y «Arno», un asistente de IA que te da la bienvenida la primera vez que entras.",
+    "cta": "Inicia sesión o regístrate",
+    "note": "Funciona desde el navegador y te lo puedes instalar como aplicación en el móvil y en el ordenador."
+  },
+  "features": {
+    "title": "Todo lo que necesitas para mantener el contacto",
+    "chat": {
+      "title": "Chats privados y de grupo",
+      "text": "Escribe a un contacto después de que haya aceptado tu solicitud, o crea grupos de hasta 50 personas con roles de administrador y miembro."
+    },
+    "messages": {
+      "title": "Mensajes en tiempo real",
+      "text": "Mira cuándo se leen los mensajes, responde a un mensaje, reenvíalo, añade reacciones y guarda los que te parezcan importantes."
+    },
+    "calls": {
+      "title": "Llamadas de audio y vídeo",
+      "text": "Llama a un contacto o a todo un grupo, de hasta 8 personas, directamente desde el navegador."
+    },
+    "media": {
+      "title": "Fotos, vídeos y mensajes de voz",
+      "text": "Envía fotos, vídeos y mensajes de voz de hasta 50 MB por archivo."
+    },
+    "arno": {
+      "title": "Arno: el asistente de IA",
+      "text": "Cada nuevo usuario se encuentra con «Arno» en el chat: un asistente basado en Gemini con el que puedes hablar al instante."
+    },
+    "app": {
+      "title": "Se puede instalar y es multilingüe",
+      "text": "Instálala como app, recibe notificaciones de mensajes y llamadas y usa la interfaz en italiano, inglés, francés, alemán o español."
+    }
+  },
+  "steps": {
+    "title": "Cómo empezar en tres pasos",
+    "one": {
+      "title": "Iniciar sesión",
+      "text": "Inicia sesión con tu correo electrónico y elige un nombre de usuario."
+    },
+    "two": {
+      "title": "Envía una solicitud",
+      "text": "Pídele a un contacto que chatee contigo: cuando acepte, podréis escribiros."
+    },
+    "three": {
+      "title": "Chatea y llama",
+      "text": "Escribe, envía fotos y vídeos, crea un grupo o inicia una llamada."
+    }
+  },
+  "about": {
+    "title": "Un proyecto que nació de la pasión",
+    "text": "WacChat Lo ha desarrollado Giuseppe Pio Ruocco como proyecto personal."
+  },
+  "footer": {
+    "linkedin": "Contáctame en LinkedIn",
+    "cta": "Prueba WacChat"
+  }
+}

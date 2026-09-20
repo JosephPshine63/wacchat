@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "WacChat – Chat en temps réel avec appels audio et vidéo",
+    "description": "WacChat : chat en temps réel, groupes, appels audio et vidéo, photos, vidéos, vocaux et l'assistant IA Arno. En 5 langues, aussi en appli.",
+    "logoAlt": "Logo d'WacChat"
+  },
+  "header": {
+    "login": "Se connecter",
+    "langLabel": "Langue"
+  },
+  "hero": {
+    "title": "Discute en temps réel, sans prise de tête",
+    "subtitle": "WacChat C'est une appli de messagerie qui propose des discussions privées et en groupe, des appels audio et vidéo, des photos et des vidéos, ainsi que « Arno », un assistant IA qui t'accueille dès ta première connexion.",
+    "cta": "Connecte-toi ou inscris-toi",
+    "note": "Ça marche depuis ton navigateur et tu peux l'installer comme application sur ton téléphone et ton ordi."
+  },
+  "features": {
+    "title": "Tout ce qu'il faut pour rester en contact",
+    "chat": {
+      "title": "Discussions privées et en groupe",
+      "text": "Écris à un contact une fois qu'il a accepté ta demande, ou crée des groupes pouvant compter jusqu'à 50 personnes, avec des rôles d'administrateur et de membre."
+    },
+    "messages": {
+      "title": "Messages en temps réel",
+      "text": "Tu peux voir quand les messages ont été lus, répondre à un message, le transférer, ajouter des réactions et enregistrer ceux qui sont importants."
+    },
+    "calls": {
+      "title": "Appels audio et vidéo",
+      "text": "Appelle un contact ou tout un groupe, jusqu'à 8 participants, directement depuis ton navigateur."
+    },
+    "media": {
+      "title": "Photos, vidéos et messages vocaux",
+      "text": "Envoie des images, des vidéos et des messages vocaux d'une taille maximale de 50 Mo par fichier."
+    },
+    "arno": {
+      "title": "Arnoe, l'assistant IA",
+      "text": "Chaque nouvel utilisateur trouve « Arno » dans le chat : un assistant basé sur Gemini avec lequel tu peux discuter tout de suite."
+    },
+    "app": {
+      "title": "Installable et multilingue",
+      "text": "Installe-la comme une appli, reçois des notifications pour tes messages et tes appels, et utilise l'interface en italien, en anglais, en français, en allemand ou en espagnol."
+    }
+  },
+  "steps": {
+    "title": "Comment commencer en trois étapes",
+    "one": {
+      "title": "Se connecter",
+      "text": "Connecte-toi avec ton adresse e-mail et choisis un nom d'utilisateur."
+    },
+    "two": {
+      "title": "Envoyer une demande",
+      "text": "Demande à un contact de discuter avec toi : quand il accepte, vous pouvez vous envoyer des messages."
+    },
+    "three": {
+      "title": "Discute et appelle",
+      "text": "Écris, envoie des photos et des vidéos, crée un groupe ou lance un appel."
+    }
+  },
+  "about": {
+    "title": "Un projet né d'une passion",
+    "text": "WacChat C'est un projet personnel développé par Giuseppe Pio Ruocco."
+  },
+  "footer": {
+    "linkedin": "Contacte-moi sur LinkedIn",
+    "cta": "Essaie WacChat"
+  }
+}

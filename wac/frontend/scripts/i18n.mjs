@@ -2,7 +2,7 @@
 /**
  * i18n tooling. Italian is the source language; en/fr/de/es are generated with DeepL.
  *
- *   node scripts/i18n.mjs translate [--lang=fr] [--bundle=frontend|backend] [--force] [--dry-run]
+ *   node scripts/i18n.mjs translate [--lang=fr] [--bundle=frontend|backend|keycloak|landing] [--force] [--dry-run]
  *   node scripts/i18n.mjs check
  *
  * `translate` only sends keys that are new or whose Italian source changed (tracked by a hash in
@@ -53,6 +53,8 @@ const BUNDLES = [
     file: (l) => join(ROOT, `wac/keycloak/themes/wacchat/login/messages/messages_${l}.properties`),
     lock: join(ROOT, 'wac/keycloak/.i18n-lock.json'),
   },
+  // Public SEO landing pages (landing/build.mjs renders them into static HTML at build time).
+  { name: 'landing', format: 'json', file: (l) => join(FRONTEND, `landing/i18n/${l}.json`) },
 ];
 
 // ---------- bundle IO ----------

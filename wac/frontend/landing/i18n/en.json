@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "WacChat – Real-time chat with audio and video calls",
+    "description": "WacChat: real-time chat with groups, audio and video calls, photos, videos, voice messages and the AI assistant Arno. In 5 languages, also as an app.",
+    "logoAlt": "WacChat Logo"
+  },
+  "header": {
+    "login": "Log In",
+    "langLabel": "Language"
+  },
+  "hero": {
+    "title": "Chat in real time, hassle-free",
+    "subtitle": "WacChat It's a messaging app with private and group chats, audio and video calls, photos and videos, and \"Arno,\" an AI assistant that greets you when you first log in.",
+    "cta": "Sign in or register",
+    "note": "It works in a browser and can be installed as an app on your phone and computer."
+  },
+  "features": {
+    "title": "Everything you need to stay in touch",
+    "chat": {
+      "title": "Private and Group Chats",
+      "text": "Message a contact after they've accepted your request, or create groups of up to 50 people with administrator and member roles."
+    },
+    "messages": {
+      "title": "Real-Time Messages",
+      "text": "See when messages have been read, reply to a message, forward it, add reactions, and save important messages."
+    },
+    "calls": {
+      "title": "Audio and Video Calls",
+      "text": "Call a contact or an entire group—up to 8 participants—directly from your browser."
+    },
+    "media": {
+      "title": "Photos, videos, and voice messages",
+      "text": "Send pictures, videos, and voice messages up to 50 MB per file."
+    },
+    "arno": {
+      "title": "Arno: The AI Assistant",
+      "text": "Every new user sees \"Arno\" in the chat: a Gemini-powered assistant they can talk to right away."
+    },
+    "app": {
+      "title": "Installable and multilingual",
+      "text": "Install it as an app, receive notifications for messages and calls, and use the interface in Italian, English, French, German, or Spanish."
+    }
+  },
+  "steps": {
+    "title": "How to Get Started in Three Steps",
+    "one": {
+      "title": "Log In",
+      "text": "Sign in with your email address and choose a username."
+    },
+    "two": {
+      "title": "Submit a request",
+      "text": "Ask a contact to chat: once they accept, you can message each other."
+    },
+    "three": {
+      "title": "Chat and Call",
+      "text": "Write a message, send photos and videos, create a group, or start a call."
+    }
+  },
+  "about": {
+    "title": "A project born out of passion",
+    "text": "WacChat It was developed by Giuseppe Pio Ruocco as a personal project."
+  },
+  "footer": {
+    "linkedin": "Contact me on LinkedIn",
+    "cta": "Try WacChat"
+  }
+}

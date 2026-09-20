@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /enter
+Disallow: /api/
+Disallow: /ws
+
+Sitemap: https://wacchat.win/sitemap.xml
