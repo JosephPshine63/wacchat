@@ -444,6 +444,8 @@
             <input
               #messageInput
               type="text"
+              enterkeyhint="send"
+              autocomplete="off"
               class="message-input"
               [disabled]="isChatPending() && pendingLimitReached()"
               [placeholder]="(isChatPending() && pendingLimitReached() ? 'main.input.limitReached' : 'main.input.placeholder') | transloco"
