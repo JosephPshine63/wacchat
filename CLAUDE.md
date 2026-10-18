@@ -280,6 +280,8 @@ Core tables: `users`, `chat`, `messages` (`state`: SENT/SEEN; `type`: TEXT/IMAGE
 | `FILE_SERVICE_BASE_URL` | `http://localhost:8083` |
 | `FILE_SERVICE_INTERNAL_API_KEY` | (empty) |
 | `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` | (empty — Web Push disabled) |
+| `GEMINI_API_KEY` | (empty — Arno bot disabled) |
+| `GEMINI_MODEL` / `GEMINI_BASE_URL` | `gemini-2.5-flash` / `https://generativelanguage.googleapis.com` (an env var set to an empty string overrides the Spring default, so `deploy-prod.sh` repeats these defaults with `${VAR:-…}`) |
 | `RABBITMQ_HOST` / `RABBITMQ_PORT` | `localhost` / `5672` |
 | `RABBITMQ_USER` / `RABBITMQ_PASSWORD` | `wacchat` / `wacchat` |
 | `BACKEND_INTERNAL_API_KEY` | (empty — internal session-validation/chat-validation/system-message endpoints reject all calls until set; shared by notification-service and call-service) |
