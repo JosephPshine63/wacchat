@@ -140,8 +140,40 @@ ${LANGS.map((a) => `    <xhtml:link rel="alternate" hreflang="${a}" href="${page
 `;
 writeFileSync(join(OUT, 'sitemap.xml'), sitemap);
 
+// Served by nginx (error_page 404) for every unknown path; noindex and no canonical, not in the sitemap.
+// Absolute URLs only: it is rendered at whatever path was requested.
+const notFound = `<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Pagina non trovata – WacChat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#FF5525">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/${cssName}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">
+      <img src="/favicon.png" width="40" height="40" alt="WacChat">
+      <span>WacChat</span>
+    </a>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Pagina non trovata</h1>
+      <p class="lead">La pagina che cerchi non esiste o è stata spostata.<br><span lang="en">Page not found.</span></p>
+      <a class="btn" href="/">Torna alla home</a>
+    </section>
+  </main>
+</body>
+</html>
+`;
+writeFileSync(join(OUT, '404.html'), notFound);
+
 if (errors.length) {
   errors.forEach((e) => console.error(`landing: ${e}`));
   process.exit(1);
 }
-console.log(`landing: rendered ${LANGS.length} pages + sitemap.xml (${cssName}) into ${OUT}`);
+console.log(`landing: rendered ${LANGS.length} pages + sitemap.xml + 404.html (${cssName}) into ${OUT}`);
