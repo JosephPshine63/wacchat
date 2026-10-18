@@ -456,13 +456,17 @@ for name in "${ONLY_CONTAINERS[@]}"; do
 done
 ok "Old containers removed"
 
+# Container healthchecks (busybox wget ships with the alpine-based images). Docker does not restart an
+# unhealthy container — a crash is covered by --restart — but `docker ps` shows the state.
+HEALTH_OPTS=(--health-interval 30s --health-timeout 5s --health-retries 3 --health-start-period 90s)
+
 # ─── 6a. Run file-service container ──────────────────────────────────────────
 if service_selected file-service; then
 log "Starting file-service container on port $PORT_FILE_SERVICE ..."
 docker run -d \
   --name "$CONTAINER_FILE_SERVICE" \
   --network "wacchat_wacchat" \
-  -p "127.0.0.1:$PORT_FILE_SERVICE:8080" \
+  -p "127.0.0.1:$PORT_FILE_SERVICE:$PORT_FILE_SERVICE" \
   -e R2_ACCOUNT_ID="${R2_ACCOUNT_ID:-}" \
   -e R2_ACCESS_KEY_ID="${R2_ACCESS_KEY_ID:-}" \
   -e R2_SECRET_ACCESS_KEY="${R2_SECRET_ACCESS_KEY:-}" \
@@ -474,6 +478,7 @@ docker run -d \
   -e LOKI_URL="http://wacchat-loki:3100/loki/api/v1/push" \
   -e TRACING_SAMPLING_PROBABILITY="${TRACING_SAMPLING_PROBABILITY:-1.0}" \
   --restart unless-stopped \
+  "${HEALTH_OPTS[@]}" --health-cmd "wget -qO /dev/null http://127.0.0.1:$PORT_FILE_SERVICE/actuator/health || exit 1" \
   "$FULL_FILE_SERVICE"
 ok "File-service container started"
 fi
@@ -484,7 +489,7 @@ log "Starting backend container on port $PORT_BACKEND ..."
 docker run -d \
   --name "$CONTAINER_BACKEND" \
   --network "wacchat_wacchat" \
-  -p "127.0.0.1:$PORT_BACKEND:8080" \
+  -p "127.0.0.1:$PORT_BACKEND:$PORT_BACKEND" \
   -e SPRING_DATASOURCE_URL="jdbc:postgresql://wacchat-db:5432/${POSTGRES_DB:-wacchat_db}" \
   -e SPRING_DATASOURCE_USERNAME="${POSTGRES_USER:-admin}" \
   -e SPRING_DATASOURCE_PASSWORD="${POSTGRES_PASSWORD:-admin}" \
@@ -512,6 +517,7 @@ docker run -d \
   -e TRACING_SAMPLING_PROBABILITY="${TRACING_SAMPLING_PROBABILITY:-1.0}" \
   -v "$SCRIPT_DIR/wac/backend/uploads:/app/uploads" \
   --restart unless-stopped \
+  "${HEALTH_OPTS[@]}" --health-cmd "wget -qO /dev/null http://127.0.0.1:$PORT_BACKEND/actuator/health || exit 1" \
   "$FULL_BACKEND"
 ok "Backend container started"
 fi
@@ -533,6 +539,7 @@ docker run -d \
   -e LOKI_URL="http://wacchat-loki:3100/loki/api/v1/push" \
   -e TRACING_SAMPLING_PROBABILITY="${TRACING_SAMPLING_PROBABILITY:-1.0}" \
   --restart unless-stopped \
+  "${HEALTH_OPTS[@]}" --health-cmd "wget -qO /dev/null http://127.0.0.1:$PORT_NOTIFICATION_SERVICE/actuator/health || exit 1" \
   "$FULL_NOTIFICATION_SERVICE"
 ok "Notification-service container started"
 fi
@@ -554,6 +561,7 @@ docker run -d \
   -e LOKI_URL="http://wacchat-loki:3100/loki/api/v1/push" \
   -e TRACING_SAMPLING_PROBABILITY="${TRACING_SAMPLING_PROBABILITY:-1.0}" \
   --restart unless-stopped \
+  "${HEALTH_OPTS[@]}" --health-cmd "wget -qO /dev/null http://127.0.0.1:8085/actuator/health || exit 1" \
   "$FULL_CALL_SERVICE"
 ok "Call-service container started"
 fi
@@ -573,6 +581,7 @@ docker run -d \
   -e LOKI_URL="http://wacchat-loki:3100/loki/api/v1/push" \
   -e TRACING_SAMPLING_PROBABILITY="${TRACING_SAMPLING_PROBABILITY:-1.0}" \
   --restart unless-stopped \
+  "${HEALTH_OPTS[@]}" --health-cmd "wget -qO /dev/null http://127.0.0.1:8081/actuator/health || exit 1" \
   "$FULL_API_GATEWAY"
 ok "API gateway container started"
 fi
@@ -585,6 +594,7 @@ docker run -d \
   --network "wacchat_wacchat" \
   -p "127.0.0.1:$PORT_FRONTEND:80" \
   --restart unless-stopped \
+  "${HEALTH_OPTS[@]}" --health-cmd "wget -qO /dev/null http://127.0.0.1/robots.txt || exit 1" \
   "$FULL_FRONTEND"
 ok "Frontend container started"
 fi

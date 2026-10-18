@@ -41,6 +41,7 @@ services:
       KC_DB_URL_DATABASE: keycloak
       KC_DB_USERNAME: ${POSTGRES_USER:-admin}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+      KC_HEALTH_ENABLED: "true"   # /health/ready on the management port 9000 (not published), for the healthcheck below
     depends_on:
       postgres:
         condition: service_healthy
@@ -52,6 +53,13 @@ services:
     command:
       - "start"
       - "--import-realm"
+    healthcheck:
+      # The image has no curl/wget: a raw HTTP request through bash's /dev/tcp.
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
     restart: unless-stopped
 
   rabbitmq:
@@ -68,6 +76,12 @@ services:
       - rabbitmq:/var/lib/rabbitmq
     networks:
       - wacchat
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     restart: unless-stopped
 
 networks:
