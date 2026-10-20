@@ -88,7 +88,7 @@ Do **not** run `docker compose up` directly. This script sources `.env`, renders
 - Keycloak `:8180`
 - RabbitMQ `:5672` (AMQP), `:61613` (STOMP), `:15672` (management UI)
 - API Gateway `:8081` (built from source and containerized)
-- The observability stack: Prometheus `:9091`, Grafana `:3000`, Loki `:3100`, Tempo `:4318`/`:4317`/`:3200`
+- The observability stack: Prometheus `:9091`, Grafana `:3000` (it fails to start if something else already holds that port; the rest of the stack is unaffected), Loki `:3100`, Tempo `:4318`/`:4317`/`:3200`
 
 ### 4. Apply the database schema (first run only)
 
@@ -116,7 +116,7 @@ cd wac/frontend && npm install && npm start          # http://localhost:4200
 
 The frontend always talks to the gateway (`http://localhost:8081`), never directly to backend/file-service/notification-service/call-service. Swagger UI is available at `http://localhost:8082/swagger-ui.html`.
 
-> **Note:** `start-local-services.sh` also lists `api-gateway` among the services it can start via `mvnw`. `deploy-local.sh` already runs api-gateway as a Docker container on the same port (`:8081`), so starting it a second time would conflict.
+> **Note:** api-gateway is not started by `start-local-services.sh`: it runs as the Docker container `deploy-local.sh` brings up on `:8081`.
 
 ---
 
@@ -242,6 +242,7 @@ Root-level files:
 ```
 deploy-local.sh                          # Start local infra + api-gateway (Docker)
 start-local-services.sh                  # Start backend/file-service/notification-service/call-service/frontend on the host
+ci-deploy.sh                             # Run on the prod host by CI: redeploys touched services, health-checks, rolls back on failure
 deploy-prod.sh                           # Production deploy (build + run; --only=<service>, optional --push)
 docker-compose.yml                       # PostgreSQL + Keycloak + RabbitMQ
 docker-compose.local.yml                 # Local overrides + api-gateway container
@@ -258,9 +259,11 @@ See the root `CLAUDE.md` for a deeper architectural walkthrough (service boundar
 ## Testing
 
 ```bash
-cd wac/backend && ./mvnw test                                   # all tests
+cd wac/backend && ./mvnw test                                   # all tests (WacchatApiApplicationTests needs Postgres/Keycloak/RabbitMQ up)
+cd wac/backend && ./mvnw test -Dtest='!WacchatApiApplicationTests'  # as in CI, no infra needed
 cd wac/backend && ./mvnw test -Dtest=ClassName                  # single test class
-cd wac/frontend && npm test                                     # Karma + Jasmine
+cd wac/frontend && npm test                                     # Karma + Jasmine (watch mode)
+cd wac/frontend && npx ng test --no-watch --browsers=ChromeHeadless  # one-shot headless run, as in CI
 cd wac/frontend && npm test -- --include='**/foo.component.spec.ts'  # single test file
 ```
 
