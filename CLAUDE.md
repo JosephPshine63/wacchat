@@ -10,6 +10,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ├── docker-compose.local.yml    # Local override — sets KC_HOSTNAME to http://localhost:8180, builds+runs api-gateway as a container
 ├── deploy-local.sh             # Preferred local startup script (sources .env, renders realm template)
 ├── deploy-prod.sh              # Production deploy script (builds images, pushes if --push); Keycloak runs in production `start` mode (docker-compose.local.yml overrides back to `start-dev` for local)
+├── ci-deploy.sh                # Run on the prod host by the CI deploy job: redeploys only the services touched since <prev-sha>, health-checks, rolls back on failure
+├── start-local-services.sh     # Starts the host-run services (backend, file-/notification-/call-service, frontend) after deploy-local.sh
 ├── cleanup-images.sh           # Project-scoped Docker image/container cleanup (backend/frontend/file-service/api-gateway/notification-service/call-service + observability stack only — leaves postgres/keycloak/rabbitmq untouched) + git pull; replaces the old cleanup.sh which pruned the entire Docker host
 ├── .env.example                # Copy to .env and fill in values
 ├── docker-compose.observability.yml       # Prometheus + Grafana + Loki + Tempo
@@ -57,7 +59,7 @@ CI (`.github/workflows/ci.yml`) runs on every push/PR to `main`: `./mvnw test` f
 
 Production traffic reaches the host through Cloudflare Tunnel: `cloudflared` is a **systemd service on the host** (`/etc/cloudflared/config.yml`: `wacchat.win` → `localhost:4200` frontend nginx, `auth.wacchat.win` → `localhost:8180` Keycloak), not a container of this project (`gprflow-cloudflared` belongs to another project). All containers use `restart: unless-stopped` and have Docker healthchecks (`--health-cmd` with busybox `wget` in `deploy-prod.sh`; Keycloak via bash `/dev/tcp` on management port 9000, which needs `KC_HEALTH_ENABLED`). Inside their containers backend and file-service listen on their own `server.port` (8082/8083), not 8080, so `deploy-prod.sh` publishes them `127.0.0.1:<port>:<port>`.
 
-Once the infra above is up, `./start-local-services.sh` starts backend, file-service, notification-service, call-service, and frontend in the background via `direnv exec` (so each loads `.env` through `.envrc`), logging to `logs/<name>.log`. Note: the script's own `SERVICES` array still lists an extra entry, `api-gateway` via `./mvnw spring-boot:run` on :8081 — this is stale since `deploy-local.sh` already runs api-gateway as a Docker container on the same port (added in `a2f0f82`); running it will attempt a redundant/conflicting bind on :8081.
+Once the infra above is up, `./start-local-services.sh` starts backend, file-service, notification-service, call-service, and frontend, each in its own terminal window via `direnv exec` (so each loads `.env` through `.envrc`), also tee'd to `logs/<name>.log`. It does not start api-gateway — that runs as the container `deploy-local.sh` brings up.
 
 ```bash
 ./start-local-services.sh               # start backend, file-service, notification-service, call-service, frontend
@@ -79,7 +81,8 @@ psql -h localhost -p 5433 -U wacchat -d wacchat_db -f wac/database/schema.sql
 cd wac/backend
 ./mvnw spring-boot:run          # dev server at http://localhost:8082 (direnv auto-loads .env)
 ./mvnw clean package            # build fat JAR
-./mvnw test                     # run all tests
+./mvnw test                     # run all tests (WacchatApiApplicationTests needs Postgres/Keycloak/RabbitMQ up)
+./mvnw test -Dtest='!WacchatApiApplicationTests'   # what CI runs — no infra needed
 ./mvnw test -Dtest=ClassName    # run a single test class
 ```
 
@@ -126,7 +129,8 @@ cd wac/frontend
 npm install
 npm start                       # ng serve — dev server at http://localhost:4200
 npm run build                   # production build
-npm test                        # Karma/Jasmine unit tests
+npm test                        # Karma/Jasmine unit tests (watch mode)
+npx ng test --no-watch --browsers=ChromeHeadless   # one-shot headless run, as in CI
 npm test -- --include='**/foo.component.spec.ts'   # run a single test file
 ```
 

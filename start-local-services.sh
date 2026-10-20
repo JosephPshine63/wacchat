@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Starts the 6 non-Docker services (backend, file-service, notification-service,
-# call-service, api-gateway, frontend), each in its own terminal window running
+# Starts the 5 non-Docker services (backend, file-service, notification-service,
+# call-service, frontend), each in its own terminal window running
 # the real foreground command — so you see live output/errors directly instead
 # of them being buried in logs/<name>.log (still tee'd there too, for `tail -f`).
-# Run deploy-local.sh first to bring up Postgres/Keycloak/RabbitMQ.
+# Run deploy-local.sh first to bring up Postgres/Keycloak/RabbitMQ and the
+# api-gateway container (:8081).
 #
 # Usage:
 #   ./start-local-services.sh          # start all services (opens one terminal window each)
@@ -28,7 +29,6 @@ declare -A HEALTH_URLS=(
   [file-service]="http://localhost:8083/actuator/health"
   [notification-service]="http://localhost:8084/actuator/health"
   [call-service]="http://localhost:8085/actuator/health"
-  [api-gateway]="http://localhost:8081/actuator/health"
   [frontend]="http://localhost:4200"
 )
 HEALTH_TIMEOUT=90   # seconds to wait for a single service to become healthy
@@ -39,7 +39,6 @@ declare -A SERVICE_PORTS=(
   [file-service]=8083
   [notification-service]=8084
   [call-service]=8085
-  [api-gateway]=8081
   [frontend]=4200
 )
 
@@ -121,7 +120,6 @@ SERVICES=(
   "file-service:wac/file-service:./mvnw spring-boot:run"
   "notification-service:wac/notification-service:./mvnw spring-boot:run"
   "call-service:wac/call-service:./mvnw spring-boot:run"
-  "api-gateway:wac/api-gateway:./mvnw spring-boot:run"
   "frontend:wac/frontend:npm start"
 )
 
